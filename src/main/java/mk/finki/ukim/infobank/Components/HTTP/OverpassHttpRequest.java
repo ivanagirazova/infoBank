@@ -1,4 +1,4 @@
-package mk.finki.ukim.infobank.UpdateDB.HTTP;
+package mk.finki.ukim.infobank.Components.HTTP;
 
 import org.xml.sax.SAXException;
 

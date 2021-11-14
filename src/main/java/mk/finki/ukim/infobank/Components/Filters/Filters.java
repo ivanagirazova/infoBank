@@ -1,8 +1,8 @@
-package mk.finki.ukim.infobank.UpdateDB.Filters;
+package mk.finki.ukim.infobank.Components.Filters;
 
 import mk.finki.ukim.infobank.DTO.XmlDto;
-import mk.finki.ukim.infobank.UpdateDB.GroupBankNames;
-import mk.finki.ukim.infobank.UpdateDB.Pipe.IFilter;
+import mk.finki.ukim.infobank.Components.GroupBankNames;
+import mk.finki.ukim.infobank.Components.Pipe.IFilter;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 

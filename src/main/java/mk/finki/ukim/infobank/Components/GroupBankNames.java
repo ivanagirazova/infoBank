@@ -1,4 +1,4 @@
-package mk.finki.ukim.infobank.UpdateDB;
+package mk.finki.ukim.infobank.Components;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package mk.finki.ukim.infobank.UpdateDB.Pipe;
+package mk.finki.ukim.infobank.Components.Pipe;
 
 import java.util.ArrayList;
 import java.util.List;
