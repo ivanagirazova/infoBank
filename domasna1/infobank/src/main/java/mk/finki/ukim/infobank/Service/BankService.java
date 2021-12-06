@@ -11,9 +11,9 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class BankService{
@@ -56,17 +56,25 @@ public class BankService{
         atmData.forEach(this::saveElement);
     }
 
-    public List<BankEntity> getAll(String name)
+    public List<BankEntity> getBanksAndAtms(boolean includeBanks ,boolean includeAtms ,String name)
     {
-        List<BankEntity> list = new ArrayList<>();
-        if(name==null)
-            bankRepository.findAll().forEach(list::add);
-        else
-            bankRepository.findAll().forEach(x-> {
-                if(x.getName().equals(name))
-                    list.add(x);
-            });
-        return list;
+        List<BankEntity> banksAndAtms = new ArrayList<>();
+        if (includeBanks)
+        {
+            banksAndAtms.addAll(bankRepository.findAllByType("bank"));
+        }
+        if (includeAtms)
+        {
+            banksAndAtms.addAll(bankRepository.findAllByType("atm"));
+        }
+        if(name != null )banksAndAtms = banksAndAtms.stream().filter(x->x.getName().contains(name)).collect(Collectors.toList());
+
+        return banksAndAtms;
+    }
+
+    public List<BankEntity> getAll()
+    {
+       return bankRepository.findAll();
     }
 
     public List<BankEntity> getBanks(String name)
