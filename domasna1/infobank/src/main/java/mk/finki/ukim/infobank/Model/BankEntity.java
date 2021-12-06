@@ -2,14 +2,16 @@ package mk.finki.ukim.infobank.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 public class BankEntity {
     @Id
     private String id;
@@ -18,6 +20,12 @@ public class BankEntity {
     private double lon;
     private double lat;
     private Map<String,String> details;
+
+    @PostConstruct
+    private void postConstruct()
+    {
+        details = new HashMap<>();
+    }
 
     public BankEntity(Map<String,String> data) {
         HashMap<String,String> detailsCopy = new HashMap<>(data);
