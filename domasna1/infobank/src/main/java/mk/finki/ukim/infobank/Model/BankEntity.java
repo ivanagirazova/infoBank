@@ -1,5 +1,6 @@
 package mk.finki.ukim.infobank.Model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
+@AllArgsConstructor
 public class BankEntity {
     @Id
     private String id;

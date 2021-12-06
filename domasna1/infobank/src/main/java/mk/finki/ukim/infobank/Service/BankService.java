@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -53,5 +54,12 @@ public class BankService{
 
         bankData.forEach(this::saveElement);
         atmData.forEach(this::saveElement);
+    }
+
+    public List<BankEntity> getBanks()
+    {
+        List<BankEntity> list = new ArrayList<>();
+        bankRepository.findAll().forEach(list::add);
+        return list;
     }
 }

@@ -16,6 +16,7 @@ public class OnStartUpdateDB implements ApplicationListener<ApplicationReadyEven
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        bankService.updateBankData();
+        //bankService.updateBankData();
+        System.out.println(bankService.getBanks());
     }
 }
