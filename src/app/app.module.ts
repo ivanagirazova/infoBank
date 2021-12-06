@@ -6,6 +6,7 @@ import { BankMarkerService } from './service/bank-marker.service';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { MapComponent } from './map/map.component';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

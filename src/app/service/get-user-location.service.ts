@@ -26,7 +26,3 @@ export class GetUserLocationService {
     this.map.setView([latitude,longitude],this.map.getZoom(),{animate: true})
   }
 }
-
-// export let geolocationServiceInjectables: Array<any> = [
-//   {provide: GeoLocationService, useClass: GeoLocationService }
-// ];
