@@ -56,10 +56,48 @@ public class BankService{
         atmData.forEach(this::saveElement);
     }
 
-    public List<BankEntity> getBanks()
+    public List<BankEntity> getAll(String name)
     {
         List<BankEntity> list = new ArrayList<>();
-        bankRepository.findAll().forEach(list::add);
+        if(name==null)
+            bankRepository.findAll().forEach(list::add);
+        else
+            bankRepository.findAll().forEach(x-> {
+                if(x.getName().equals(name))
+                    list.add(x);
+            });
+        return list;
+    }
+
+    public List<BankEntity> getBanks(String name)
+    {
+        List<BankEntity> list = new ArrayList<>();
+        if(name==null)
+            bankRepository.findAll().forEach(x -> {
+                if(x.getType().equals("bank"))
+                    list.add(x);
+            });
+        else
+            bankRepository.findAll().forEach(x -> {
+                if(x.getType().equals("bank") && x.getName().equals(name))
+                    list.add(x);
+            });
+        return list;
+    }
+
+    public List<BankEntity> getAtms(String name)
+    {
+        List<BankEntity> list = new ArrayList<>();
+        if(name==null)
+            bankRepository.findAll().forEach(x -> {
+                if(x.getType().equals("atm"))
+                    list.add(x);
+            });
+        else
+            bankRepository.findAll().forEach(x -> {
+                if(x.getType().equals("atm") && x.getName().equals(name))
+                    list.add(x);
+            });
         return list;
     }
 }
