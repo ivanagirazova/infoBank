@@ -2,7 +2,6 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import { BankMarkerService} from "../service/bank-marker.service";
 import { GetUserLocationService } from "../service/get-user-location.service";
-import {Observable} from "rxjs";
 
 
 const iconRetinaUrl = 'assets/pngfind.com-location-symbol-png-2821102.png';
@@ -65,7 +64,6 @@ export class MapComponent implements AfterViewInit,OnInit  {
   change()
   {
     this.bankMarkerService.showBankMarker(this.map,this.searchBank,this.searchAtm,this.nameBank);
-    console.log(this.searchBank + ' ' + this.searchAtm + ' ' + this.nameBank)
   }
 }
 

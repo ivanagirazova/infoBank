@@ -20,7 +20,6 @@ export class GetUserLocationService {
       coords: { latitude, longitude },
     } = position;
 
-    console.log(latitude + ' ' +  longitude)
     const marker = L.marker([latitude, longitude]);
     marker.addTo(this.map);
     this.map.setView([latitude,longitude],this.map.getZoom(),{animate: true})
