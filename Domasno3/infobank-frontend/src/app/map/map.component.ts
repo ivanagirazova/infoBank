@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import { BankMarkerService} from "../service/bank-marker.service";
 import { GetUserLocationService } from "../service/get-user-location.service";
+import {Observable} from "rxjs";
 
 
 const iconRetinaUrl = 'assets/pngfind.com-location-symbol-png-2821102.png';
@@ -24,13 +25,13 @@ L.Marker.prototype.options.icon = iconDefault;
   styleUrls: ['./map.component.css']
 })
 
-export class MapComponent implements AfterViewInit  {
+export class MapComponent implements AfterViewInit,OnInit  {
 
   private map:any;
   searchBank:boolean = true;
   searchAtm:boolean = true;
   nameBank:string = '';
-  operators:Array<string> = ['','Народната Банка на Република Македонија', 'Стопанска Банка', 'Охридска Банка', 'Уни Банка', 'NLB Банка', 'Halkbank', 'Комерцијална Банка', 'Зират Банка', 'Централен Регистер на РМ', 'Шпаркасе Банка', 'Централна Кооперативна Банка', 'Прокредит Банка', 'ТТК Банка', 'Силк Роуд Банка', 'Western Union'];
+  operators:Array<string> = ['']
 
 
   private initMap(): void {
@@ -50,11 +51,14 @@ export class MapComponent implements AfterViewInit  {
 
   constructor(private bankMarkerService: BankMarkerService, private geoUserLocation: GetUserLocationService) { }
 
+  ngOnInit(): void {
+    this.operators = [''];
+    this.bankMarkerService.getOperators().subscribe(operators=>this.operators = [...this.operators,...operators]);
+  }
+
   ngAfterViewInit(): void {
     this.initMap();
     this.change()
-    //this.operators = this.bankMarkerService.getOperators();
-    //console.log(this.operators)
     this.geoUserLocation.GetUserLocationService(this.map);
   }
 
