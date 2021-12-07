@@ -28,6 +28,27 @@ public class BankService{
         bankRepository.save(new BankEntity(element));
     }
 
+    public List<BankEntity> getBanksAndAtms(boolean includeBanks ,boolean includeAtms ,String name)
+    {
+        List<BankEntity> banksAndAtms = new ArrayList<>();
+        if (includeBanks)
+        {
+            banksAndAtms.addAll(bankRepository.findAllByType("bank"));
+        }
+        if (includeAtms)
+        {
+            banksAndAtms.addAll(bankRepository.findAllByType("atm"));
+        }
+        if(name != null )banksAndAtms = banksAndAtms.stream().filter(x->x.getName().contains(name)).collect(Collectors.toList());
+
+        return banksAndAtms;
+    }
+
+    public List<BankEntity> getAll()
+    {
+       return bankRepository.findAll();
+    }
+
     public void updateBankData()
     {
         InputStream bankInputStream = null;
@@ -56,26 +77,6 @@ public class BankService{
         atmData.forEach(this::saveElement);
     }
 
-    public List<BankEntity> getBanksAndAtms(boolean includeBanks ,boolean includeAtms ,String name)
-    {
-        List<BankEntity> banksAndAtms = new ArrayList<>();
-        if (includeBanks)
-        {
-            banksAndAtms.addAll(bankRepository.findAllByType("bank"));
-        }
-        if (includeAtms)
-        {
-            banksAndAtms.addAll(bankRepository.findAllByType("atm"));
-        }
-        if(name != null )banksAndAtms = banksAndAtms.stream().filter(x->x.getName().contains(name)).collect(Collectors.toList());
-
-        return banksAndAtms;
-    }
-
-    public List<BankEntity> getAll()
-    {
-       return bankRepository.findAll();
-    }
 /*    public List<BankEntity> getBanks(String name)
     {
         List<BankEntity> list = new ArrayList<>();
