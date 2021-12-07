@@ -26,7 +26,7 @@ public class BankRestController {
         return bankService.getAll().stream().map(BankEntity::getName).distinct().collect(Collectors.toList());
     }
 
-    @GetMapping(value="/bank")
+/*    @GetMapping(value="/bank")
     public List<BankEntity> getBanks(@RequestParam(required = false) String name) {
         return bankService.getBanks(name);
     }
@@ -34,5 +34,5 @@ public class BankRestController {
     @GetMapping(value="/atm")
     public List<BankEntity> getAtms(@RequestParam(required = false) String name) {
         return bankService.getAtms(name);
-    }
+    }*/
 }
