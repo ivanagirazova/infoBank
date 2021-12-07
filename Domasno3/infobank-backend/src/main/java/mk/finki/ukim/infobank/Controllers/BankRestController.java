@@ -1,4 +1,4 @@
-package mk.finki.ukim.infobank.Controller;
+package mk.finki.ukim.infobank.Controllers;
 
 import mk.finki.ukim.infobank.Model.BankEntity;
 import mk.finki.ukim.infobank.Service.BankService;
