@@ -76,8 +76,7 @@ public class BankService{
     {
        return bankRepository.findAll();
     }
-
-    public List<BankEntity> getBanks(String name)
+/*    public List<BankEntity> getBanks(String name)
     {
         List<BankEntity> list = new ArrayList<>();
         if(name==null)
@@ -107,5 +106,6 @@ public class BankService{
                     list.add(x);
             });
         return list;
-    }
+    }*/
+
 }
