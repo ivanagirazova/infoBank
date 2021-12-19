@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import { BankMarkerService} from "../service/bank-marker.service";
 import { GetUserLocationService } from "../service/get-user-location.service";
+import {LocationInfo} from "../models/LocationInfo";
 
 
 const iconRetinaUrl = 'assets/pngfind.com-location-symbol-png-2821102.png';
@@ -30,7 +31,8 @@ export class MapComponent implements AfterViewInit,OnInit  {
   searchBank:boolean = true;
   searchAtm:boolean = true;
   nameBank:string = '';
-  operators:Array<string> = ['']
+  operators:Array<string> = [''];
+  userLocation:any;
 
 
   private initMap(): void {
@@ -58,12 +60,19 @@ export class MapComponent implements AfterViewInit,OnInit  {
   ngAfterViewInit(): void {
     this.initMap();
     this.change()
-    this.geoUserLocation.GetUserLocationService(this.map);
+    this.userLocation = this.geoUserLocation.GetUserLocationService(this.map);
+    console.log(this.userLocation);
   }
 
-  change()
-  {
-    this.bankMarkerService.showBankMarker(this.map,this.searchBank,this.searchAtm,this.nameBank);
+  change() {
+    this.geoUserLocation.getPosition().subscribe((pos)=> this.userLocation = pos);
+    //{"lon": 41.9643218,"lat": 21.4503507}
+
+    let userLocation = new LocationInfo(0,0);
+    console.log(this.userLocation);
+    if (this.userLocation != undefined)  userLocation = new LocationInfo(this.userLocation.coords.latitude,this.userLocation.coords.longitude);
+    console.log(userLocation);
+    this.bankMarkerService.showBankMarker(this.map,this.searchBank,this.searchAtm,this.nameBank, JSON.stringify(userLocation) );
   }
 }
 

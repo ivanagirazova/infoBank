@@ -13,24 +13,28 @@ export class BankMarkerService {
   private circles:Array<L.CircleMarker> = []
 
   constructor(private http: HttpClient, private popupService: PopupService) {
-    this.usersUrl = "http://localhost:8080/get";
+    this.usersUrl = "http://192.168.0.17:8080/get";
   }
 
-  showBankMarker(map: L.Map,showBank:boolean, showAtm: boolean, name: string): void {
-    this.http.get(this.usersUrl,{params: {'includeBanks': showBank,'includeAtms': showAtm,'name': name}}).subscribe(res => {
+  showBankMarker(map: L.Map,showBank:boolean, showAtm: boolean, name: string, userLocation:any): void {
+    this.http.get(
+      this.usersUrl,
+      {params: {'includeBanks': showBank,'includeAtms': showAtm,'name': name, 'userLocation': userLocation}}
+    ).subscribe(res => {
       this.banks = res
-
+      console.log(this.banks);
       this.circles.forEach(x=>x.remove());
       for (const c of this.banks) {
         let circleColor = 'red';
-        if (c.type === 'atm') circleColor = 'blue';
-        const circle = L.circleMarker([c.lat, c.lon], {
+        let bank = c.bankEntity;
+        if (bank.type === 'atm') circleColor = 'blue';
+        const circle = L.circleMarker([bank.lat, bank.lon], {
           radius: 10,
           color: circleColor
         });
         this.circles.push(circle);
 
-        circle.bindPopup(this.popupService.makeBankPopup(c));
+        circle.bindPopup(this.popupService.makeBankPopup(bank));
         circle.addTo(map);
       }
     });
