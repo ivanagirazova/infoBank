@@ -10,13 +10,11 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
-public class BankEntity {
+public class BankEntity extends LocationInfo {
     @Id
     private String id;
     private String type;
     private String name;
-    private double lon;
-    private double lat;
     private Map<String,String> details;
 
     @PostConstruct
