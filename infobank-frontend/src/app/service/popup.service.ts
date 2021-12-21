@@ -9,11 +9,11 @@ export class PopupService {
   constructor() { }
 
   makeBankPopup(data: BankDistance): string {
-    let bank = data.bank;
+    let bank = data.bankEntity;
     let ret =
       `<div>Bank: ${ bank.name }</div>
        <div>Type: ${ bank.type }</div>
-       <div>Distance: ${ data.distance } m</div>`;
+       <div>Distance: ${ data.distanceFromUser } m</div>`;
 
     for (let key in bank.details) {
       ret += `<div>${key}: ${ bank.details[key] }</div>`;

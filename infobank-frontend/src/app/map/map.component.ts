@@ -33,11 +33,12 @@ export class MapComponent implements AfterViewInit,OnInit  {
   nameBank:string = '';
   operators:Array<string> = [''];
   userLocation:any;
+  cityCenter: LocationInfo = new LocationInfo(41.9936657, 21.4428736);
 
 
   private initMap(): void {
     this.map = L.map('map', {
-      center: [ 41.9936657, 21.4428736],
+      center: [ this.cityCenter.lat, this.cityCenter.lon],
       zoom: 14
     });
 
@@ -53,26 +54,29 @@ export class MapComponent implements AfterViewInit,OnInit  {
   constructor(private bankMarkerService: BankMarkerService, private geoUserLocation: GetUserLocationService) { }
 
   ngOnInit(): void {
-    this.operators = [''];
-    this.bankMarkerService.getOperators().subscribe(operators=>this.operators = [...this.operators,...operators]);
+    this.bankMarkerService.getOperators().subscribe(operators=>
+      this.operators = ['',...operators]
+    );
   }
 
   ngAfterViewInit(): void {
     this.initMap();
     this.change()
-    this.userLocation = this.geoUserLocation.GetUserLocationService(this.map);
-    console.log(this.userLocation);
   }
 
   change() {
-    this.geoUserLocation.getPosition().subscribe((pos)=> this.userLocation = pos);
-    //{"lon": 41.9643218,"lat": 21.4503507}
+    this.geoUserLocation.getUserLocation().subscribe({
+      next:(pos)=> {
+        this.geoUserLocation.setUserLocationToMap(this.map, pos);
 
-    let userLocation = new LocationInfo(0,0);
-    console.log(this.userLocation);
-    if (this.userLocation != undefined)  userLocation = new LocationInfo(this.userLocation.coords.latitude,this.userLocation.coords.longitude);
-    console.log(userLocation);
-    this.bankMarkerService.getBanks(this.map,this.searchBank,this.searchAtm,this.nameBank, JSON.stringify(userLocation) );
+        this.userLocation = new LocationInfo(pos.coords.latitude, pos.coords.longitude);
+        console.log(this.userLocation);
+        this.bankMarkerService.getBanks(this.map,this.searchBank,this.searchAtm,this.nameBank, this.userLocation);
+      },
+      error: ()=> {
+        this.bankMarkerService.getBanks(this.map,this.searchBank,this.searchAtm,this.nameBank, new LocationInfo(this.cityCenter.lat, this.cityCenter.lon));
+      }
+    });
   }
 }
 

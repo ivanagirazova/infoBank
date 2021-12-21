@@ -1,11 +1,11 @@
 import {BankEntity} from "./BankEntity";
 
 export class BankDistance {
-  public bank: BankEntity
-  public distance: number
+  public bankEntity: BankEntity
+  public distanceFromUser: number
 
   constructor(bank: BankEntity, distance: number) {
-    this.bank = bank;
-    this.distance = distance;
+    this.bankEntity = bank;
+    this.distanceFromUser = distance;
   }
 }
