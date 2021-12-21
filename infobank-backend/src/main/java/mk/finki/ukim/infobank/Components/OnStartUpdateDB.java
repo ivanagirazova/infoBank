@@ -5,7 +5,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-
+//@Component
 public class OnStartUpdateDB implements ApplicationListener<ApplicationReadyEvent> {
 
     private final BankService bankService;
@@ -16,7 +16,7 @@ public class OnStartUpdateDB implements ApplicationListener<ApplicationReadyEven
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        //bankService.updateBankData();
+        bankService.updateBankData();
         //System.out.println(bankService.getBanks());
     }
 }

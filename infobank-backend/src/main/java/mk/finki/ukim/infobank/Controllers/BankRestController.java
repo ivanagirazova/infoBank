@@ -12,17 +12,17 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("get")
+@RequestMapping("banks")
 public class BankRestController {
 
     @Autowired
     private BankService bankService;
 
-    @GetMapping
+    @PostMapping
     public List<BankDistanceUserDTO> getAll(@RequestParam(required = false) boolean includeBanks,
                                    @RequestParam(required = false) boolean includeAtms,
                                    @RequestParam(required = false) String name,
-                                   @RequestParam(required = false) LocationInfo userLocation) {
+                                   @RequestBody(required = false) LocationInfo userLocation) {
         if (userLocation == null) {
             return bankService.getBanksAndAtms(includeBanks,includeAtms,name).stream()
                     .map(x->new BankDistanceUserDTO(x,0))
@@ -40,14 +40,4 @@ public class BankRestController {
     public double Distance(@RequestParam LocationInfo start, @RequestParam LocationInfo end) {
         return BankService.distance(start, end);
     }
-
-/*    @GetMapping(value="/bank")
-    public List<BankEntity> getBanks(@RequestParam(required = false) String name) {
-        return bankService.getBanks(name);
-    }
-
-    @GetMapping(value="/atm")
-    public List<BankEntity> getAtms(@RequestParam(required = false) String name) {
-        return bankService.getAtms(name);
-    }*/
 }

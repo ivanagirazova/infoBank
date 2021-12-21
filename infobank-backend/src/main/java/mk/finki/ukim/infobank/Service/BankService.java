@@ -50,7 +50,7 @@ public class BankService{
     {
         return getBanksAndAtms(includeBanks, includeAtms, name)
                 .stream().map( x -> new BankDistanceUserDTO(x, distance(UserLocation, x)))
-                .sorted(Comparator.comparing(BankDistanceUserDTO::getDistanceFromUser)).limit(10)
+                .sorted(Comparator.comparing(BankDistanceUserDTO::getDistanceFromUser))
                 .collect(Collectors.toList());
     }
 
@@ -118,7 +118,7 @@ public class BankService{
 
         distance = Math.pow(distance, 2) + Math.pow(height, 2);
 
-        return Math.sqrt(distance);
+        return Math.round(Math.sqrt(distance));
     }
 
 }
