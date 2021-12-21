@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as L from "leaflet";
 import {Browser} from "leaflet";
-import retina = Browser.retina;
 import {Observable} from "rxjs";
 
 

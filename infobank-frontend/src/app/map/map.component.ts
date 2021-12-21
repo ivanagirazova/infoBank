@@ -72,7 +72,7 @@ export class MapComponent implements AfterViewInit,OnInit  {
     console.log(this.userLocation);
     if (this.userLocation != undefined)  userLocation = new LocationInfo(this.userLocation.coords.latitude,this.userLocation.coords.longitude);
     console.log(userLocation);
-    this.bankMarkerService.showBankMarker(this.map,this.searchBank,this.searchAtm,this.nameBank, JSON.stringify(userLocation) );
+    this.bankMarkerService.getBanks(this.map,this.searchBank,this.searchAtm,this.nameBank, JSON.stringify(userLocation) );
   }
 }
 

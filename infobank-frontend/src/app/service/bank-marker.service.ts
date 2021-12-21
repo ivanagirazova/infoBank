@@ -3,61 +3,49 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import * as L from 'leaflet';
 import { PopupService } from './popup.service';
 import {catchError, Observable, throwError} from "rxjs";
+import {BankEntity} from "../models/BankEntity";
+import {BankDistance} from "../models/BankDistance";
+import {BankService} from "./bank.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BankMarkerService {
-  banks: any;
-  private usersUrl: string;
+  private banks: BankDistance[] = [];
   private circles:Array<L.CircleMarker> = []
 
-  constructor(private http: HttpClient, private popupService: PopupService) {
-    this.usersUrl = "http://192.168.0.17:8080/get";
+  constructor(private http: HttpClient, private popupService: PopupService, private bankService: BankService) {}
+
+  getBanks(map: L.Map, showBank:boolean, showAtm: boolean, name: string, userLocation:any): void {
+    // this.bankService.getBanks(showBank, showAtm, name, userLocation)
+    //   .subscribe(res => {
+    //     this.banks = res;
+    //     console.log(this.banks);
+    //     this.showMarks(map, <BankDistance[]>res);
+    //   });
+    this.showMarks(map, this.bankService.getHardCodedBanks().map(x=>new BankDistance(x, 0)));
   }
 
-  showBankMarker(map: L.Map,showBank:boolean, showAtm: boolean, name: string, userLocation:any): void {
-    this.http.get(
-      this.usersUrl,
-      {params: {'includeBanks': showBank,'includeAtms': showAtm,'name': name, 'userLocation': userLocation}}
-    ).subscribe(res => {
-      this.banks = res
-      console.log(this.banks);
-      this.circles.forEach(x=>x.remove());
-      for (const c of this.banks) {
-        let circleColor = 'red';
-        let bank = c.bankEntity;
-        if (bank.type === 'atm') circleColor = 'blue';
-        const circle = L.circleMarker([bank.lat, bank.lon], {
-          radius: 10,
-          color: circleColor
-        });
-        this.circles.push(circle);
+  showMarks(map: L.Map, banks: BankDistance[]){
+    this.circles.forEach(x=>x.remove());
+    for (const bankDistance of banks) {
+      let bank = bankDistance.bank;
 
-        circle.bindPopup(this.popupService.makeBankPopup(bank));
-        circle.addTo(map);
-      }
-    });
-    }
+      let circleColor = 'red';
+      if (bank.type === 'atm') circleColor = 'blue';
+      const circle = L.circleMarker([bank.lat, bank.lon], {
+        radius: 10,
+        color: circleColor
+      });
+      this.circles.push(circle);
 
-    getOperators() : Observable<any>
-    {
-      return this.http.get(this.usersUrl+"/operators")    ;
-      //return this.http.jsonp(this.usersUrl+"/operators",'callback').pipe(catchError(this.handleError));
+      circle.bindPopup(this.popupService.makeBankPopup(bankDistance));
+      circle.addTo(map);
     }
+  }
 
-    private handleError(error: HttpErrorResponse) {
-      if (error.status === 0) {
-        // A client-side or network error occurred. Handle it accordingly.
-        console.error('An error occurred:', error.error);
-      } else {
-        // The backend returned an unsuccessful response code.
-        // The response body may contain clues as to what went wrong.
-        console.error(
-          `Backend returned code ${error.status}, body was: `, error.error);
-      }
-      // Return an observable with a user-facing error message.
-      return throwError(
-        'Something bad happened; please try again later.');
-    }
+  getOperators() : Observable<any> {
+    return this.bankService.getOperators();
+    //return this.http.jsonp(this.usersUrl+"/operators",'callback').pipe(catchError(this.handleError));
+  }
 }
