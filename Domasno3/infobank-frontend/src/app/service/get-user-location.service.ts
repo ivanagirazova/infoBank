@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as L from "leaflet";
+import {Observable} from "rxjs";
 
 
 @Injectable({
@@ -7,22 +8,23 @@ import * as L from "leaflet";
 })
 export class GetUserLocationService {
 
-  private map: any;
-  public GetUserLocationService(map: any): any {
-    this.map = map;
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.setGeoLocation.bind(this));
-    }
+  public getUserLocation():Observable<any> {
+    return new Observable((observer:any) => {
+      window.navigator.geolocation.getCurrentPosition(position => {
+          observer.next(position);
+          observer.complete();
+        },
+        error => observer.error(error));
+    });
   }
 
-  setGeoLocation(position: { coords: { latitude: any; longitude: any } }) {
+  public setUserLocationToMap(map: any, position: { coords: { latitude: any; longitude: any } }) {
     const {
       coords: { latitude, longitude },
     } = position;
 
-    console.log(latitude + ' ' +  longitude)
     const marker = L.marker([latitude, longitude]);
-    marker.addTo(this.map);
-    this.map.setView([latitude,longitude],this.map.getZoom(),{animate: true})
+    marker.addTo(map);
+    map.setView([latitude,longitude], map.getZoom(), {animate: true})
   }
 }
