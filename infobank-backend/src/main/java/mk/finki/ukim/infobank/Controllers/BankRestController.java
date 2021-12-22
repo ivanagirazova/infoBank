@@ -35,9 +35,4 @@ public class BankRestController {
     public List<String> getAllBankOperators() {
         return bankService.getAll().stream().map(BankEntity::getName).distinct().collect(Collectors.toList());
     }
-
-    @GetMapping("distance")
-    public double Distance(@RequestParam LocationInfo start, @RequestParam LocationInfo end) {
-        return BankService.distance(start, end);
-    }
 }
