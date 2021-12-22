@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/infobank-backend/infobank.iml" filepath="$PROJECT_DIR$/infobank-backend/infobank.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/infobank-backend.iml" filepath="$PROJECT_DIR$/.idea/infobank-backend.iml" />
-    </modules>
-  </component>
-</project>
