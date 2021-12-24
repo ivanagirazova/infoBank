@@ -13,7 +13,7 @@ export class BankMarkerService {
   private banks: BankDistance[] = [];
   private circles:Array<L.CircleMarker> = []
 
-  constructor(private http: HttpClient, private popupService: PopupService, private bankService: BankService) {}
+  constructor(private popupService: PopupService, private bankService: BankService) {}
 
   getBanks(map: L.Map, showBank:boolean, showAtm: boolean, name: string, userLocation:any): void {
     this.bankService.getBanks(showBank, showAtm, name, userLocation)
@@ -40,9 +40,5 @@ export class BankMarkerService {
       circle.bindPopup(this.popupService.makeBankPopup(bankDistance));
       circle.addTo(map);
     }
-  }
-
-  getOperators() : Observable<any> {
-    return this.bankService.getOperators();
   }
 }

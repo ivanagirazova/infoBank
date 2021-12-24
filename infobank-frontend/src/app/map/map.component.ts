@@ -1,8 +1,11 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import * as L from 'leaflet';
 import { BankMarkerService} from "../service/bank-marker.service";
 import { GetUserLocationService } from "../service/get-user-location.service";
 import {LocationInfo} from "../models/LocationInfo";
+import {BankEntity} from "../models/BankEntity";
+import {BankService} from "../service/bank.service";
+import {BankDistance} from "../models/BankDistance";
 
 
 const iconRetinaUrl = 'assets/pngfind.com-location-symbol-png-2821102.png';
@@ -25,16 +28,17 @@ L.Marker.prototype.options.icon = iconDefault;
   styleUrls: ['./map.component.css']
 })
 
-export class MapComponent implements AfterViewInit,OnInit  {
+export class MapComponent implements AfterViewInit,OnInit , OnChanges  {
 
   private map:any;
-  searchBank:boolean = true;
-  searchAtm:boolean = true;
-  nameBank:string = '';
-  operators:Array<string> = [''];
-  userLocation:any;
-  cityCenter: LocationInfo = new LocationInfo(41.9936657, 21.4428736);
 
+  @Input() searchBank:boolean = true;
+  @Input() searchAtm:boolean = true;
+  @Input() nameBank:string = '';
+  userLocation:any;
+  banks: BankDistance[] = [];
+
+  cityCenter: LocationInfo = new LocationInfo(41.9936657, 21.4428736);
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -51,18 +55,16 @@ export class MapComponent implements AfterViewInit,OnInit  {
     tiles.addTo(this.map);
   }
 
-  constructor(private bankMarkerService: BankMarkerService, private geoUserLocation: GetUserLocationService) { }
+  constructor(private bankMarkerService: BankMarkerService,private bankService: BankService, private geoUserLocation: GetUserLocationService) { }
 
   ngOnInit(): void {
-    this.bankMarkerService.getOperators().subscribe(operators=>
-      this.operators = ['',...operators]
-    );
   }
 
   ngAfterViewInit(): void {
     this.initMap();
     this.change()
   }
+
 
   change() {
     this.geoUserLocation.getUserLocation().subscribe({
@@ -77,6 +79,16 @@ export class MapComponent implements AfterViewInit,OnInit  {
         this.bankMarkerService.getBanks(this.map,this.searchBank,this.searchAtm,this.nameBank, new LocationInfo(this.cityCenter.lat, this.cityCenter.lon));
       }
     });
+
+    this.bankService.getBanks(this.searchBank,this.searchAtm,this.nameBank, this.userLocation).subscribe(
+      x=> this.banks = x
+    );
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.change();
+  }
+
+
 }
 
