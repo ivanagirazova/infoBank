@@ -18,6 +18,13 @@ export class DetailsComponent implements OnInit,OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(this.banks);
+    console.log(this.show);
+  }
+
+  show: boolean = true;
+
+  changeShow() : void {
+    this.show = !this.show;
   }
 
 }

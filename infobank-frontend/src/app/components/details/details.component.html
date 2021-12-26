@@ -1,7 +1,39 @@
-<div class="details">
-  <ng-container *ngFor="let bank of this.banks">
-    {{bank.bankEntity.name}}
-    {{bank.distanceFromUser}} m
-    <br>
-  </ng-container>
+<!--<div class="details">-->
+<!--  <ng-container *ngFor="let bank of this.banks">-->
+<!--    {{bank.bankEntity.name}}-->
+<!--    {{bank.distanceFromUser}} m-->
+<!--    <br>-->
+<!--  </ng-container>-->
+<!--</div>-->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="details.component.css" />
+<div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width: 350px;">
+
+  <div [ngClass]="show ? 'list-group' : 'none'" class="list-group list-group-flush scrollarea scrollbar-primary">
+    <div>
+      <img (click)="changeShow()" src="https://i.imgur.com/qLleYMU.png" height="30px" width="30px" alt="arrow">
+    </div>
+    <ng-container *ngFor="let bank of this.banks">
+      <a href="#" class="list-group-item list-group-item-action py-3 lh-tight ">
+        <div class="d-flex w-100">
+          <div class="col-sm-3">
+            <img class="bankislika" src="https://i.imgur.com/xLw53KE.jpg" alt="Logo od stopanska banka" width="60" height="60">
+          </div>
+          <div class="col-sm-7">
+            <strong class="mb-1">{{bank.bankEntity.name}}</strong>
+            <div class="col-10 mb-1 small">
+              <div *ngIf="bank.bankEntity.type.toString().endsWith('bank'); else elseBlock">Банка</div>
+              <ng-template #elseBlock>Банкомат</ng-template>
+            </div>
+          </div>
+          <small class="text-muted col-sm-2">{{bank.distanceFromUser}}m</small>
+        </div>
+      </a>
+    </ng-container>
+  </div>
 </div>
+  <div [ngClass]="!show ? 'arrow' : 'none'" class="arrow">
+    <img (click)="changeShow()" src="https://i.imgur.com/1tZgTW7.png" height="30px" width="30px" alt="arrow">
+  </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+</script>
