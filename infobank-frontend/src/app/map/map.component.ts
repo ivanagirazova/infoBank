@@ -70,19 +70,31 @@ export class MapComponent implements AfterViewInit,OnInit , OnChanges  {
     this.geoUserLocation.getUserLocation().subscribe({
       next:(pos)=> {
         this.geoUserLocation.setUserLocationToMap(this.map, pos);
-
+        console.log(pos + "dad");
         this.userLocation = new LocationInfo(pos.coords.latitude, pos.coords.longitude);
-        console.log(this.userLocation);
+
+        this.bankService.getBanks(this.searchBank,this.searchAtm,this.nameBank, this.userLocation).subscribe(
+          x=> this.banks = x
+        );
+
         this.bankMarkerService.getBanks(this.map,this.searchBank,this.searchAtm,this.nameBank, this.userLocation);
       },
       error: ()=> {
+        this.bankService.getBanks(this.searchBank,this.searchAtm,this.nameBank, this.userLocation).subscribe(
+          x=> this.banks = x
+        );
+
         this.bankMarkerService.getBanks(this.map,this.searchBank,this.searchAtm,this.nameBank, new LocationInfo(this.cityCenter.lat, this.cityCenter.lon));
       }
     });
 
-    this.bankService.getBanks(this.searchBank,this.searchAtm,this.nameBank, this.userLocation).subscribe(
-      x=> this.banks = x
-    );
+    console.log(this.userLocation);
+    setInterval(() => {
+        // this.bankService.getBanks(this.searchBank,this.searchAtm,this.nameBank, this.userLocation).subscribe(
+        //   x=> this.banks = x
+        // );
+    }, 1000);
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
