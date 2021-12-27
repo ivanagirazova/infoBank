@@ -1,11 +1,8 @@
-<div>
-  banks<input type="checkbox" [(ngModel)]="searchBank" (change)="change()">
-  atm<input type="checkbox" [(ngModel)]="searchAtm" (change)="change()">
-  <select [(ngModel)]="nameBank"><option *ngFor="let operator of operators" [value]="operator" [text]="operator"></option></select>
-  <button (click)="change()">search</button>
-</div>
 <div class="map-container">
   <div class="map-frame">
-    <div id="map"></div>
+    <div id="map">
+    </div>
   </div>
 </div>
+
+<app-details [banks]="this.banks"></app-details>
