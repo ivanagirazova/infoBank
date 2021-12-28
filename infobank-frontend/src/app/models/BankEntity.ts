@@ -1,5 +1,5 @@
 export class BankEntity {
-  public _id: string;
+  public id: string;
   public _class: string;
   public lat: number;
   public lon: number;
@@ -8,7 +8,7 @@ export class BankEntity {
   public details:  { [key: string]: string } = {};
 
   constructor(id: string, _class: string, lat: number, lon: number, name: string, type: string, details: {}) {
-    this._id = id;
+    this.id = id;
     this._class = _class;
     this.lat = lat;
     this.lon = lon;

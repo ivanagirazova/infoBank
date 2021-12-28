@@ -1,5 +1,4 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {BankEntity} from "../../models/BankEntity";
 import {BankDistance} from "../../models/BankDistance";
 import {BankService} from "../../service/bank.service";
 
@@ -11,7 +10,7 @@ import {BankService} from "../../service/bank.service";
 export class DetailsComponent implements OnInit,OnChanges {
 
   @Input() banks: BankDistance[] = [];
-  selectedBank:any;
+  @Input() selectedBank:any;
 
   constructor(public bankService:BankService) { }
 
@@ -19,6 +18,7 @@ export class DetailsComponent implements OnInit,OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+
   }
 
   show: boolean = true;
@@ -28,7 +28,6 @@ export class DetailsComponent implements OnInit,OnChanges {
   }
 
   onClick(selectedBank: BankDistance) {
-    console.log(selectedBank);
     this.selectedBank = selectedBank;
   }
 

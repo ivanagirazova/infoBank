@@ -11,7 +11,7 @@ export class PopupService {
 
   makeBankPopup(data: BankDistance): string {
     let bank = data.bankEntity;
-    let link = this.bankService.getPicture(data.bankEntity.name, data.bankEntity.type == "atm");
+    let link = this.bankService.getPicture(data.bankEntity.name, data.bankEntity.type);
     let ret =
       `<div>Bank: ${ bank.name }</div>
        <div>Type: ${ bank.type }</div>

@@ -17,14 +17,4 @@ export class GetUserLocationService {
         error => observer.error(error));
     });
   }
-
-  public setUserLocationToMap(map: any, position: { coords: { latitude: any; longitude: any } }) {
-    const {
-      coords: { latitude, longitude },
-    } = position;
-
-    const marker = L.marker([latitude, longitude]);
-    marker.addTo(map);
-    map.setView([latitude,longitude], map.getZoom(), {animate: true})
-  }
 }

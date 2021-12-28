@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import * as L from 'leaflet';
 import { PopupService } from './popup.service';
@@ -7,55 +7,52 @@ import {BankDistance} from "../models/BankDistance";
 import {BankService} from "./bank.service";
 import {mark} from "@angular/compiler-cli/src/ngtsc/perf/src/clock";
 import {LocationInfo} from "../models/LocationInfo";
+import {MapComponent} from "../map/map.component";
+import {DivIconOptions} from "leaflet";
+import {MapService} from "./map.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BankMarkerService {
-  private banks: BankDistance[] = [];
-  private circles:Array<L.Marker> = [];
-  cityCenter: LocationInfo = new LocationInfo(41.9936657, 21.4428736);
+  private markers:Array<L.Marker> = [];
+  private userLocationMarker: any;
 
-  constructor(private popupService: PopupService, private bankService: BankService) {}
+  constructor(private bankService: BankService,private mapService: MapService) {}
 
-  getBanks(map: L.Map, showBank:boolean, showAtm: boolean, name: string, userLocation:any): void {
-    this.bankService.getBanks(showBank, showAtm, name, userLocation)
-      .subscribe(res => {
-        this.banks = res;
-        this.showMarks(map, <BankDistance[]>res);
-      });
-  }
-
-  showMarks(map: L.Map, banks: BankDistance[]){
-    this.circles.forEach(x=>x.remove());
+  showBanksOnMap(banks: BankDistance[], component: MapComponent): void {
+    let map = this.mapService.map;
+    this.markers.forEach(x => x.remove());
 
     for (const bankDistance of banks) {
       let bank = bankDistance.bankEntity;
 
-      let circleColor = 'red';
-      if (bank.type === 'atm') circleColor = 'blue';
-      // const circle = L.circleMarker([bank.lat, bank.lon], {
-      //   radius: 10,
-      //   color: circleColor
-      // });
-      // this.circles.push(circle);
-      //
-      // circle.bindPopup(this.popupService.makeBankPopup(bankDistance));
-      // circle.addTo(map);
+      let options:CustomDivIconOptions = {
+        html: `<img src="${this.bankService.getPicture(bank.name, bank.type)}" class="bank-icons" >`,
+        id : bank.id
+      };
 
-      //const marker = L.marker([bank.lat, bank.lon], {icon: IconProperty}).addTo(map);
-      //L.marker([bank.lat,bank.lon]).bindPopup(`<img src="${this.bankService.getPicture(bank.name,bank.type == "atm")}">`).addTo(map);
-      //this.circles.push(marker);
+      let marker = L.marker([bank.lat, bank.lon], {icon: L.divIcon(options) }).addTo(map);
+      marker.on('click', component.onClickBank.bind(component));
 
-      var myIcon = L.divIcon({html: `<img src="${this.bankService.getPicture(bank.name,bank.type == "atm")}" class="bank-icons" >`});
-      const marker = L.marker([bank.lat,bank.lon], {icon: myIcon}).addTo(map);
-      this.circles.push(marker);
-
-      marker.on('click', this.onClick)
+      this.markers.push(marker);
     }
   }
 
-  onClick(e:any) {
-    console.log(e);
+  public setUserLocationToMap(location:LocationInfo) {
+    let map = this.mapService.map;
+    if (this.userLocationMarker != undefined){
+      this.userLocationMarker.remove();
+    }
+    this.userLocationMarker=  L.marker([location.lat, location.lon]).addTo(map);
+    this.userLocationMarker.addTo(map);
+    map.setView([location.lat,location.lon], map.getZoom(), {animate: true})
   }
+}
+
+
+class CustomDivIconOptions implements DivIconOptions{
+  html?: string | HTMLElement | false | undefined;
+  className?: string | undefined;
+  id? : string | undefined
 }

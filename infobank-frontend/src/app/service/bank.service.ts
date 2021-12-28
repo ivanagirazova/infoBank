@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
-import {catchError, Observable, throwError} from "rxjs";
+import {catchError, map, Observable, throwError} from "rxjs";
+import {BankDistance} from "../models/BankDistance";
 
 @Injectable({
   providedIn: 'root'
 })
-export class BankService {
+export class BankService implements OnInit {
 
   usersUrl = "https://infobank-spring.herokuapp.com/banks";//"http://localhost:8080/banks";
+  public banks: BankDistance[] = []
   pictures = [
     {name:'Централен Регистер на РМ', bank:'https://i.imgur.com/7FxzUdU.jpeg', atm:'https://i.imgur.com/7FxzUdU.jpeg'},
     {name:'Народната Банка на Република Македонија', bank:'https://i.imgur.com/o8aypnQ.jpeg', atm:'https://i.imgur.com/o8aypnQ.jpeg'},
@@ -28,6 +30,12 @@ export class BankService {
   constructor(private http:HttpClient) {
   }
 
+  ngOnInit(): void {
+    this.http.get<BankImage[]>(this.usersUrl + '/images',{
+      headers : new HttpHeaders({ 'Content-Type': 'application/json' }),
+    }).subscribe(x=>this.pictures = x);
+  }
+
   getBanks(showBank:boolean, showAtm: boolean, name: string, userLocation:any): Observable<any> {
     return this.http.post(
       this.usersUrl,
@@ -39,15 +47,15 @@ export class BankService {
     ).pipe(catchError(this.handleError));
   }
 
-  getOperators(): Observable<any> {
-    return this.http.get(this.usersUrl+"/operators");
+  getOperators(): Observable<string[]> {
+    return this.http.get<string []>(this.usersUrl+"/operators");
   }
 
-  getPicture(name:string,atm: boolean): any {
+  getPicture(name:string,type: string) {
     let bankImage = this.pictures.find(x=>x.name===name);
     if (bankImage == undefined) return null;
 
-    if (atm) return bankImage.atm;
+    if (type == BankType.Atm) return bankImage.atm;
     return bankImage.bank;
   }
 
@@ -65,4 +73,21 @@ export class BankService {
     return throwError(()=>
       'Something bad happened; please try again later.');
   }
+}
+
+export class BankImage {
+  name: string;
+  bank: string;
+  atm: string;
+
+  constructor(name: string, bank: string, atm: string) {
+    this.name = name;
+    this.bank = bank;
+    this.atm = atm;
+  }
+}
+
+export enum BankType {
+  Bank = "bank",
+  Atm = "atm"
 }
