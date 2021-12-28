@@ -42,20 +42,22 @@ export class MapComponent implements AfterViewInit,OnInit , OnChanges  {
 
         this.bankMarkerService.setUserLocationToMap(this.userLocation);
 
-        this.bankService.getBanks(this.searchBank,this.searchAtm,this.nameBank, this.userLocation).subscribe(
-          x=> {
-            this.banks = x;
-            this.bankService.banks = x;
-            this.bankMarkerService.showBanksOnMap(this.banks, this);
-          }
-        );
+        if (this.banks.length == 0)
+          this.bankService.getBanks(this.searchBank,this.searchAtm,this.nameBank, this.userLocation).subscribe(
+            x=> {
+              this.banks = x;
+              this.bankService.banks = x;
+              this.bankMarkerService.showBanksOnMap(this.banks, this);
+            }
+          );
         },
       error: ()=> {
-        this.bankService.getBanks(this.searchBank,this.searchAtm,this.nameBank, this.userLocation).subscribe(
-          x=> {
-            this.banks = x;
-            this.bankMarkerService.showBanksOnMap(this.banks, this);
-          });}
+        if (this.banks.length == 0)
+          this.bankService.getBanks(this.searchBank,this.searchAtm,this.nameBank, this.userLocation).subscribe(
+            x=> {
+              this.banks = x;
+              this.bankMarkerService.showBanksOnMap(this.banks, this);
+            });}
     });
   }
 

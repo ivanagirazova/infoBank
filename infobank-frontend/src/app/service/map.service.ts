@@ -41,4 +41,8 @@ export class MapService{
 
     return this.map;
   }
+
+  setView(location:LocationInfo) {
+   this.map.setView([location.lat,location.lon], this.map.getZoom(), {animate: true})
+  }
 }

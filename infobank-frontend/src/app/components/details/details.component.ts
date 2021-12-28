@@ -1,25 +1,20 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {BankDistance} from "../../models/BankDistance";
 import {BankService} from "../../service/bank.service";
+import {MapService} from "../../service/map.service";
+import {LocationInfo} from "../../models/LocationInfo";
 
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css']
 })
-export class DetailsComponent implements OnInit,OnChanges {
+export class DetailsComponent {
 
   @Input() banks: BankDistance[] = [];
   @Input() selectedBank:any;
 
-  constructor(public bankService:BankService) { }
-
-  ngOnInit(): void {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-
-  }
+  constructor(public bankService:BankService, private mapService:MapService) { }
 
   show: boolean = true;
 
@@ -29,6 +24,7 @@ export class DetailsComponent implements OnInit,OnChanges {
 
   onClick(selectedBank: BankDistance) {
     this.selectedBank = selectedBank;
+    this.mapService.setView(new LocationInfo(selectedBank.bankEntity.lat, selectedBank.bankEntity.lon));
   }
 
   onBackClick() {
@@ -38,5 +34,4 @@ export class DetailsComponent implements OnInit,OnChanges {
   objectKeys(obj:BankDistance) {
     return Object.keys(obj);
   }
-
 }

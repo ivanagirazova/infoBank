@@ -46,10 +46,9 @@ export class BankMarkerService {
     }
     this.userLocationMarker=  L.marker([location.lat, location.lon]).addTo(map);
     this.userLocationMarker.addTo(map);
-    map.setView([location.lat,location.lon], map.getZoom(), {animate: true})
+    this.mapService.setView(location);
   }
 }
-
 
 class CustomDivIconOptions implements DivIconOptions{
   html?: string | HTMLElement | false | undefined;
