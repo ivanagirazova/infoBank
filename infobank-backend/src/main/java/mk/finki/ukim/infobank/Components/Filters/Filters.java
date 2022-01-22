@@ -74,14 +74,6 @@ public class Filters {
         return x.stream().filter(z-> GroupBankNames.noBanks.stream().noneMatch(y->z.get("name").contains(y))).collect(Collectors.toList());
     };
 
-/*    public static IFilter<List<XmlDto>,List<XmlDto>> bankHasAtm = (x) -> x.stream().filter(y->y.map.containsKey("atm")).filter(y->y.map.get("atm").equals("yes")).collect(Collectors.toList());
-
-    public static IFilter<List<List<XmlDto>>, List<XmlDto>> combineAtms = (x) -> x.stream().flatMap(Collection::stream).filter(distinctByKey(y->y.map.get("id"))).collect(Collectors.toList());
-
-    public static IFilter<List<XmlDto>, List<XmlDto>> AmenityToAtms = (x) -> x.stream().peek(z->z.map.replace("amenity","atm")).collect(Collectors.toList());
-
-    public static IFilter<List<XmlDto>, Void> addToDataBase = (x) -> { System.out.println(x);return null; };*/
-
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
