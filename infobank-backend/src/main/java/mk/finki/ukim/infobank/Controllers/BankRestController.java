@@ -19,17 +19,18 @@ public class BankRestController {
     @Autowired
     private BankService bankService;
 
-    //@Autowired
-    //private BankImageRepository bankImageRepository;
+    @Autowired
+    private BankImageRepository bankImageRepository;
 
     @PostMapping
-    public List<BankDistanceUserDTO> getAll(@RequestParam(required = false) boolean includeBanks,
-                                   @RequestParam(required = false) boolean includeAtms,
-                                   @RequestParam(required = false) String name,
-                                   @RequestBody(required = false) LocationInfo userLocation) {
+    public List<BankDistanceUserDTO> getAll(
+                                            @RequestParam(required = false) boolean includeBanks,
+                                            @RequestParam(required = false) boolean includeAtms,
+                                            @RequestParam(required = false) String name,
+                                            @RequestBody(required = false) LocationInfo userLocation) {
         if (userLocation == null) {
             return bankService.getBanksAndAtms(includeBanks,includeAtms,name).stream()
-                    .map(x->new BankDistanceUserDTO(x,0))
+                    .map(x->new BankDistanceUserDTO(x,null))
                     .collect(Collectors.toList());
         }
         return bankService.getBanksAndAtmsSortedByUserDistance(includeBanks,includeAtms, name, userLocation);
@@ -40,8 +41,8 @@ public class BankRestController {
         return bankService.getAll().stream().map(BankEntity::getName).distinct().collect(Collectors.toList());
     }
 
-//    @GetMapping("image")
-//    public BankImages bankImages() {
-//        return bankImageRepository.findBankImagesByName("Стопанска Банка");
-//    }
+    @GetMapping("image")
+    public BankImages bankImages() {
+        return bankImageRepository.findBankImagesByName("Стопанска Банка");
+    }
 }

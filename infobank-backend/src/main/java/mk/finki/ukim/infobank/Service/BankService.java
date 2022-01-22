@@ -33,12 +33,10 @@ public class BankService{
     public List<BankEntity> getBanksAndAtms(boolean includeBanks ,boolean includeAtms ,String name)
     {
         List<BankEntity> banksAndAtms = new ArrayList<>();
-        if (includeBanks)
-        {
+        if (includeBanks) {
             banksAndAtms.addAll(bankRepository.findAllByType("bank"));
         }
-        if (includeAtms)
-        {
+        if (includeAtms) {
             banksAndAtms.addAll(bankRepository.findAllByType("atm"));
         }
         if(name != null )banksAndAtms = banksAndAtms.stream().filter(x->x.getName().contains(name)).collect(Collectors.toList());

@@ -8,9 +8,9 @@ import mk.finki.ukim.infobank.Model.BankEntity;
 @Setter
 public class BankDistanceUserDTO {
     private BankEntity bankEntity;
-    private double distanceFromUser;
+    private Double distanceFromUser;
 
-    public BankDistanceUserDTO(BankEntity bankEntity, double distanceFromUser) {
+    public BankDistanceUserDTO(BankEntity bankEntity, Double distanceFromUser) {
         this.bankEntity = bankEntity;
         this.distanceFromUser = distanceFromUser;
     }
