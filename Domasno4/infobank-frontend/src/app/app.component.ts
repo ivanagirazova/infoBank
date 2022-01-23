@@ -1,7 +1,6 @@
-import {Component, Input} from '@angular/core';
-import {LocationInfo} from "./models/LocationInfo";
-import {BankService} from "./service/bank.service";
-import {BankEntity} from "./models/BankEntity";
+import {Component} from '@angular/core';
+import {LocationInfo} from "./models/location-info";
+import {SearchBanksQuery} from "./models/search.banks.query";
 
 @Component({
   selector: 'app-root',
@@ -10,18 +9,19 @@ import {BankEntity} from "./models/BankEntity";
 })
 export class AppComponent {
   title = 'InfoBank-frontend';
+
   searchBank:boolean = true;
   searchAtm:boolean = true;
   nameBank:string = '';
-  location: LocationInfo = new LocationInfo(0,0);
+  location: LocationInfo | undefined;
 
-  constructor(private bankSerice: BankService) {
+  constructor() {
   }
 
-  getSearch(search: any) {
-    this.searchBank = search[0];
-    this.searchAtm = search[1];
-    this.nameBank = search[2];
-    this.location = search[3];
+  getSearch(search: SearchBanksQuery) {
+    this.searchBank = search.banks
+    this.searchAtm = search.atms
+    this.nameBank = search.name
+    this.location = search.location
   }
 }

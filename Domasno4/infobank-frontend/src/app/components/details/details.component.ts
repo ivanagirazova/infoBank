@@ -1,8 +1,8 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {BankDistance} from "../../models/BankDistance";
+import {Component, Input} from '@angular/core';
+import {BankDistance} from "../../models/bank-distance";
 import {BankService} from "../../service/bank.service";
 import {MapService} from "../../service/map.service";
-import {LocationInfo} from "../../models/LocationInfo";
+import {LocationInfo} from "../../models/location-info";
 
 @Component({
   selector: 'app-details',
@@ -12,7 +12,7 @@ import {LocationInfo} from "../../models/LocationInfo";
 export class DetailsComponent {
 
   @Input() banks: BankDistance[] = [];
-  @Input() selectedBank:any;
+  @Input() selectedBank: BankDistance | undefined;
 
   constructor(public bankService:BankService, private mapService:MapService) { }
 
@@ -24,7 +24,7 @@ export class DetailsComponent {
 
   onClick(selectedBank: BankDistance) {
     this.selectedBank = selectedBank;
-    this.mapService.setView(new LocationInfo(selectedBank.bankEntity.lat, selectedBank.bankEntity.lon));
+    this.mapService.centerView(new LocationInfo(selectedBank.bankInfo.lat, selectedBank.bankInfo.lon));
   }
 
   onBackClick() {
@@ -33,5 +33,17 @@ export class DetailsComponent {
 
   objectKeys(obj:BankDistance) {
     return Object.keys(obj);
+  }
+
+  getDistance(bank: BankDistance): string {
+    if (bank.distanceFromUser != null) {
+      return this.calculateDistance(bank.distanceFromUser);
+    }
+    else return "";
+  }
+
+  calculateDistance(distance: number): string {
+    if (distance > 1000) return (distance/1000) + " km";
+    return distance + " m";
   }
 }

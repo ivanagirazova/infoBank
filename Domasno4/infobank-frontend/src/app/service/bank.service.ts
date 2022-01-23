@@ -1,39 +1,21 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
-import {catchError, map, Observable, throwError} from "rxjs";
-import {BankDistance} from "../models/BankDistance";
+import {catchError, Observable, throwError} from "rxjs";
+import {BankDistance} from "../models/bank-distance";
+import {BankImage} from "../models/bank-image";
+import {BankType} from "../models/bank-type";
 
 @Injectable({
   providedIn: 'root'
 })
-export class BankService implements OnInit {
+export class BankService {
 
-  usersUrl = "https://infobank-spring.herokuapp.com/banks";
+  usersUrl = "http://localhost:8080/banks";//"https://infobank-spring.herokuapp.com/banks";
   public banks: BankDistance[] = []
-  pictures = [
-    {name:'Централен Регистер на РМ', bank:'https://i.imgur.com/7FxzUdU.jpeg', atm:'https://i.imgur.com/7FxzUdU.jpeg'},
-    {name:'Народната Банка на Република Македонија', bank:'https://i.imgur.com/o8aypnQ.jpeg', atm:'https://i.imgur.com/o8aypnQ.jpeg'},
-    {name:'Стопанска Банка', bank:'https://i.imgur.com/xLw53KE.jpg', atm:'https://i.imgur.com/iyorn8E.png'},
-    {name:'Охридска Банка', bank:'https://i.imgur.com/KdjVKRY.jpeg', atm:'https://i.imgur.com/XqrGA5k.jpeg'},
-    {name:'Уни Банка', bank:'https://i.imgur.com/wumYBai.jpg', atm:'https://i.imgur.com/10y6DLi.jpg'},
-    {name:'NLB Банка', bank:'https://i.imgur.com/5Py7aEF.png', atm:'https://i.imgur.com/eAplp6O.jpeg'},
-    {name:'Halkbank', bank:'https://i.imgur.com/laMMGDz.jpg', atm:'https://i.imgur.com/qu85ztS.jpeg'},
-    {name:'Комерцијална Банка', bank:'https://i.imgur.com/1kpGoCn.jpg', atm:'https://i.imgur.com/3c0TN2Q.jpg'},
-    {name:'Шпаркасе Банка', bank:'https://i.imgur.com/K7VQLyy.png', atm:'https://i.imgur.com/5EEJNCS.jpg'},
-    {name:'Централна Кооперативна Банка', bank:'https://i.imgur.com/H4AqOLa.jpeg', atm:'https://i.imgur.com/GKOp91o.jpeg'},
-    {name:'Прокредит Банка', bank:'https://i.imgur.com/fpgqBUe.jpg', atm:'https://i.imgur.com/gPmZz36.jpg'},
-    {name:'ТТК Банка', bank:'https://i.imgur.com/fuH2Yy3.jpg', atm:'https://i.imgur.com/j8eEI5E.jpg'},
-    {name:'Силк Роуд Банка', bank:'https://i.imgur.com/WHu6qnx.jpg', atm:'https://i.imgur.com/tgmGLxP.jpg'},
-    {name:'Western Union', bank:'https://i.imgur.com/TdPPdNc.jpg', atm:'https://i.imgur.com/TdPPdNc.jpg'},
-    {name:'Зират Банка', bank:'https://i.imgur.com/b3km4qK.jpg', atm:'https://i.imgur.com/b3km4qK.jpg'}]
+  pictures:BankImage[] = []
 
   constructor(private http:HttpClient) {
-  }
-
-  ngOnInit(): void {
-    this.http.get<BankImage[]>(this.usersUrl + '/images',{
-      headers : new HttpHeaders({ 'Content-Type': 'application/json' }),
-    }).subscribe(x=>this.pictures = x);
+    this.getImages();
   }
 
   getBanks(showBank:boolean, showAtm: boolean, name: string, userLocation:any): Observable<any> {
@@ -41,10 +23,16 @@ export class BankService implements OnInit {
       this.usersUrl,
       JSON.stringify(userLocation),
       {
-        headers : new HttpHeaders({ 'Content-Type': 'application/json' }),
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
         params: new HttpParams().set('includeBanks', showBank).set('includeAtms', showAtm).set('name', name)
       }
     ).pipe(catchError(this.handleError));
+  }
+
+  getImages() {
+    this.http.get<BankImage[]>(this.usersUrl + '/images',{
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    }).subscribe(x => this.pictures = x);
   }
 
   getOperators(): Observable<string[]> {
@@ -75,19 +63,6 @@ export class BankService implements OnInit {
   }
 }
 
-export class BankImage {
-  name: string;
-  bank: string;
-  atm: string;
 
-  constructor(name: string, bank: string, atm: string) {
-    this.name = name;
-    this.bank = bank;
-    this.atm = atm;
-  }
-}
 
-export enum BankType {
-  Bank = "bank",
-  Atm = "atm"
-}
+

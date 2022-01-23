@@ -1,4 +1,4 @@
-export class LocationInfo{
+export class LocationInfo {
   public lat: number;
   public lon: number;
 

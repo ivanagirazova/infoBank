@@ -11,16 +11,16 @@
         <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" (click)="onClick(bank)">
           <div class="d-flex w-100">
             <div class="col-sm-3">
-              <img class="bankislika" src="{{this.bankService.getPicture(bank.bankEntity.name, bank.bankEntity.type)}}" alt="Logo" width="60" height="60">
+              <img class="bankislika" src="{{this.bankService.getPicture(bank.bankInfo.name, bank.bankInfo.type)}}" alt="Logo" width="60" height="60">
             </div>
-            <div class="col-sm-7">
-              <strong class="mb-1">{{bank.bankEntity.name}}</strong>
+            <div class="col-sm-6">
+              <strong class="mb-1">{{bank.bankInfo.name}}</strong>
               <div class="col-10 mb-1 small">
-                <div *ngIf="bank.bankEntity.type.toString().endsWith('bank'); else elseBlock">Банка</div>
+                <div *ngIf="bank.bankInfo.type.toString().endsWith('bank'); else elseBlock">Банка</div>
                 <ng-template #elseBlock>Банкомат</ng-template>
               </div>
             </div>
-            <small class="text-muted col-sm-2">{{bank.distanceFromUser}}m</small>
+            <small class="text-muted col-sm-3">{{getDistance(bank)}}</small>
           </div>
         </a>
       </ng-container>
@@ -29,19 +29,19 @@
       <a href="#" class="list-group-item list-group-item-action py-3 lh-tight">
         <div class="d-flex w-100">
           <div class="col-sm-3">
-            <img class="bankislika" src="{{this.bankService.getPicture(selectedBank.bankEntity.name, selectedBank.bankEntity.type)}}" alt="Logo" width="60" height="60">
+            <img class="bankislika" src="{{this.bankService.getPicture(selectedBank.bankInfo.name, selectedBank.bankInfo.type)}}" alt="Logo" width="60" height="60">
           </div>
-          <div class="col-sm-7">
-            <strong class="mb-1">{{selectedBank.bankEntity.name}}</strong>
+          <div class="col-sm-6">
+            <strong class="mb-1">{{selectedBank.bankInfo.name}}</strong>
             <div class="col-10 mb-1 small">
-              <div *ngIf="selectedBank.bankEntity.type.toString().endsWith('bank'); else elseBlock">Банка</div>
+              <div *ngIf="selectedBank.bankInfo.type.toString().endsWith('bank'); else elseBlock">Банка</div>
               <ng-template #elseBlock>Банкомат</ng-template>
             </div>
           </div>
-          <small class="text-muted col-sm-2">{{selectedBank.distanceFromUser}}m</small>
+          <small class="text-muted col-sm-3">{{getDistance(selectedBank)}}</small>
         </div>
       </a>
-      <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" *ngFor="let item of selectedBank.bankEntity.details  | keyvalue">
+      <a href="#" class="list-group-item list-group-item-action py-3 lh-tight" *ngFor="let item of selectedBank.bankInfo.details  | keyvalue">
         <strong class="mb-1">{{item.key}}</strong>
             <div class="w-100 mb-1 small mb-1 small" >
               {{item.value}}

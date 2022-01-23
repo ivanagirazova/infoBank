@@ -6,7 +6,7 @@ import {Observable} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class GetUserLocationService {
+export class UserLocationService {
 
   public getUserLocation():Observable<any> {
     return new Observable((observer:any) => {
