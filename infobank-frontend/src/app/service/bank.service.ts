@@ -8,7 +8,7 @@ import {BankDistance} from "../models/BankDistance";
 })
 export class BankService implements OnInit {
 
-  usersUrl = "https://infobank-spring.herokuapp.com/banks";//"http://localhost:8080/banks";
+  usersUrl = "https://infobank-spring.herokuapp.com/banks";
   public banks: BankDistance[] = []
   pictures = [
     {name:'Централен Регистер на РМ', bank:'https://i.imgur.com/7FxzUdU.jpeg', atm:'https://i.imgur.com/7FxzUdU.jpeg'},
