@@ -41,8 +41,8 @@ public class BankRestController {
         return bankService.getAll().stream().map(BankEntity::getName).distinct().collect(Collectors.toList());
     }
 
-    @GetMapping("image")
-    public BankImages bankImages() {
-        return bankImageRepository.findBankImagesByName("Стопанска Банка");
+    @GetMapping("images")
+    public List<BankImages> bankImages() {
+        return bankImageRepository.findAll();
     }
 }

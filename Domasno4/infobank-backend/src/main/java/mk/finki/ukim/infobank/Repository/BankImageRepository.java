@@ -8,5 +8,8 @@ import java.util.List;
 
 
 public interface BankImageRepository extends CrudRepository<BankImages, String> {
+    @Override
+    List<BankImages> findAll();
+
     BankImages findBankImagesByName(String name);
 }
