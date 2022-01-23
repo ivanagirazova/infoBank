@@ -91,15 +91,9 @@ public class Filters {
 
             if (currNode.getNodeName().equals("tag")) {
                 currXmlDto.map.put(keyvalues.get(0).getNodeValue(), keyvalues.get(1).getNodeValue());
-                //System.out.println(repeatChar('\t',tabCtr)+keyvalues.stream().map(Node::getNodeValue).collect(Collectors.joining("=")));
             }
             else {
                 keyvalues.forEach(x -> currXmlDto.map.put(x.getNodeName(), x.getNodeValue()));
-/*                for (int i=0;i<currNode.getChildNodes().getLength();i++)
-                {
-
-                }*/
-                //System.out.println(repeatChar('\t',tabCtr)+keyvalues.stream().map(Object::toString).collect(Collectors.joining(" ")));
             }
         }
         if (currNode.hasChildNodes())
