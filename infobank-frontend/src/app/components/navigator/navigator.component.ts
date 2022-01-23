@@ -1,8 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {LocationInfo} from "../../models/LocationInfo";
-import {GetUserLocationService} from "../../service/get-user-location.service";
-import {BankMarkerService} from "../../service/bank-marker.service";
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {BankService} from "../../service/bank.service";
+import {SearchBanksQuery} from "../../models/search.banks.query";
 
 @Component({
   selector: 'app-navigator',
@@ -11,9 +9,9 @@ import {BankService} from "../../service/bank.service";
 })
 export class NavigatorComponent implements OnInit {
 
-  searchBank:boolean = true;
-  searchAtm:boolean = true;
-  nameBank:string = '';
+  searchBank: boolean = true;
+  searchAtm: boolean = true;
+  nameBank: string = '';
 
   @Output() searchChangedEvent = new EventEmitter<any>();
 
@@ -28,22 +26,8 @@ export class NavigatorComponent implements OnInit {
     );
   }
 
-  change() {
-    this.searchChangedEvent.emit([this.searchBank, this.searchAtm, this.nameBank, this.userLocation])
+  searchBanks() {
+    this.searchChangedEvent.emit(new SearchBanksQuery(this.searchBank, this.searchAtm, this.nameBank, this.userLocation))
   }
 
-}
-
-export class searchQuery {
-  banks: boolean;
-  atms: boolean;
-  name: string;
-  location: LocationInfo;
-
-  constructor(banks: boolean, atms: boolean, name: string, location: LocationInfo) {
-    this.banks = banks;
-    this.atms = atms;
-    this.name = name;
-    this.location = location;
-  }
 }
