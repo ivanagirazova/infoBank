@@ -15,6 +15,7 @@ public class BankEntity extends LocationInfo {
     private String id;
     private String type;
     private String name;
+    //BankImage so BankImages.Name
     private Map<String,String> details;
 
     @PostConstruct
