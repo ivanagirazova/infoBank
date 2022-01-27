@@ -1,12 +1,22 @@
 package mk.finki.ukim.infobank.Service;
 
+import com.mongodb.BasicDBObject;
 import mk.finki.ukim.infobank.DTO.BankDistanceUserDTO;
 import mk.finki.ukim.infobank.Model.BankEntity;
+import mk.finki.ukim.infobank.Model.BankImgResult;
 import mk.finki.ukim.infobank.Model.LocationInfo;
 import mk.finki.ukim.infobank.Repository.BankRepository;
 import mk.finki.ukim.infobank.Components.Filters.Filters;
 import mk.finki.ukim.infobank.Components.HTTP.OverpassHttpRequest;
 import mk.finki.ukim.infobank.Components.Pipe.Pipe;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -119,4 +129,34 @@ public class BankService{
         return Math.round(Math.sqrt(distance));
     }
 
+    //Moj code
+    //Kaj ke se povika funkcijava?
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    private Logger LOGGER = LoggerFactory.getLogger(BankService.class);
+
+    public void lookupOperation(){
+        LookupOperation lookupOperation = LookupOperation.newLookup()
+                .from("BankImages")
+                .localField("name")
+                .foreignField("name")
+                .as("BankImages");
+
+        Aggregation aggregation = Aggregation.newAggregation(lookupOperation);
+        List<BankImgResult> results = mongoTemplate.aggregate(aggregation, "BanksImages", BankImgResult.class).getMappedResults();
+        LOGGER.info("Obj Size " +results.size());
+    }
+
+    public void newLookupOperation(){
+        LookupOperation lookupOperation = LookupOperation.newLookup().
+                from("BankImages").
+                localField("name").
+                foreignField("name").
+                as("BankImages");
+
+        AggregationOperation match = Aggregation.match(Criteria.where("post").size(1));
+        Aggregation aggregation = Aggregation.newAggregation(lookupOperation, match);
+        List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "users", BasicDBObject.class).getMappedResults();
+    }
 }

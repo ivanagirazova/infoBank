@@ -2,10 +2,13 @@ package mk.finki.ukim.infobank.Model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mk.finki.ukim.infobank.Repository.BankImageRepository;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -15,8 +18,13 @@ public class BankEntity extends LocationInfo {
     private String id;
     private String type;
     private String name;
-    //BankImage so BankImages.Name
+    private BankImgResult BankImgResult;
+    private String BankImgResultString;
     private Map<String,String> details;
+
+    //BankImage so BankImages.Name
+/*    @DBRef(lazy = true)
+    private List<BankImages> bankImages;*/
 
     @PostConstruct
     private void postConstruct()
@@ -34,5 +42,6 @@ public class BankEntity extends LocationInfo {
         details = detailsCopy;
         detailsCopy.remove("lat");
         detailsCopy.remove("lon");
+        BankImgResultString = detailsCopy.remove("BankImgResult");
     }
 }
