@@ -27,7 +27,7 @@ public class BankRestController {
                                             @RequestParam(required = false) boolean includeAtms,
                                             @RequestParam(required = false) String name,
                                             @RequestBody(required = false) LocationInfo userLocation) {
-        return bankService.getBanksAndAtmsList(includeBanks,includeAtms, name, userLocation);
+        return bankService.getBankDistanceUserDTO(includeBanks,includeAtms, name, userLocation);
     }
 
     @GetMapping("operators")

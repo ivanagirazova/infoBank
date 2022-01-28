@@ -44,7 +44,7 @@ public class BankService{
         return banksAndAtms;
     }
 
-    public List<BankDistanceUserDTO> getBanksAndAtmsList(boolean includeBanks , boolean includeAtms , String name, LocationInfo UserLocation)
+    public List<BankDistanceUserDTO> getBankDistanceUserDTO(boolean includeBanks , boolean includeAtms , String name, LocationInfo UserLocation)
     {
         if(UserLocation == null)
             return getBanksAndAtmsWithoutUserDistance(includeBanks,includeAtms,name);
