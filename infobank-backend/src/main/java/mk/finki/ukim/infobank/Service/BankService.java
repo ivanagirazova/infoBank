@@ -44,11 +44,26 @@ public class BankService{
         return banksAndAtms;
     }
 
+    public List<BankDistanceUserDTO> getBankDistanceUserDTO(boolean includeBanks , boolean includeAtms , String name, LocationInfo UserLocation)
+    {
+        if(UserLocation == null)
+            return getBanksAndAtmsWithoutUserDistance(includeBanks,includeAtms,name);
+        else
+            return getBanksAndAtmsSortedByUserDistance(includeBanks,includeAtms,name,UserLocation);
+    }
+
     public List<BankDistanceUserDTO> getBanksAndAtmsSortedByUserDistance(boolean includeBanks , boolean includeAtms , String name, LocationInfo UserLocation)
     {
         return getBanksAndAtms(includeBanks, includeAtms, name)
                 .stream().map( x -> new BankDistanceUserDTO(x, distance(UserLocation, x)))
                 .sorted(Comparator.comparing(BankDistanceUserDTO::getDistanceFromUser))
+                .collect(Collectors.toList());
+    }
+
+    public List<BankDistanceUserDTO> getBanksAndAtmsWithoutUserDistance(boolean includeBanks , boolean includeAtms , String name)
+    {
+        return getBanksAndAtms(includeBanks,includeAtms,name).stream()
+                .map(x->new BankDistanceUserDTO(x,null))
                 .collect(Collectors.toList());
     }
 

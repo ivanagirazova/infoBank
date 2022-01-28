@@ -23,17 +23,11 @@ public class BankRestController {
     private BankImageRepository bankImageRepository;
 
     @PostMapping
-    public List<BankDistanceUserDTO> getAll(
-                                            @RequestParam(required = false) boolean includeBanks,
+    public List<BankDistanceUserDTO> getAll(@RequestParam(required = false) boolean includeBanks,
                                             @RequestParam(required = false) boolean includeAtms,
                                             @RequestParam(required = false) String name,
                                             @RequestBody(required = false) LocationInfo userLocation) {
-        if (userLocation == null) {
-            return bankService.getBanksAndAtms(includeBanks,includeAtms,name).stream()
-                    .map(x->new BankDistanceUserDTO(x,null))
-                    .collect(Collectors.toList());
-        }
-        return bankService.getBanksAndAtmsSortedByUserDistance(includeBanks,includeAtms, name, userLocation);
+        return bankService.getBankDistanceUserDTO(includeBanks,includeAtms, name, userLocation);
     }
 
     @GetMapping("operators")
