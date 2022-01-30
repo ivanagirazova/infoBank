@@ -1,23 +1,13 @@
 package mk.finki.ukim.infobank.Service;
 
-import com.mongodb.BasicDBObject;
 import mk.finki.ukim.infobank.DTO.BankDistanceUserDTO;
 import mk.finki.ukim.infobank.Model.BankEntity;
-import mk.finki.ukim.infobank.Model.BankImgResult;
 import mk.finki.ukim.infobank.Model.LocationInfo;
-import mk.finki.ukim.infobank.Repository.BankImageRepository;
 import mk.finki.ukim.infobank.Repository.BankRepository;
+import mk.finki.ukim.infobank.Repository.BankImageRepository;
 import mk.finki.ukim.infobank.Components.Filters.Filters;
 import mk.finki.ukim.infobank.Components.HTTP.OverpassHttpRequest;
 import mk.finki.ukim.infobank.Components.Pipe.Pipe;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
-import org.springframework.data.mongodb.core.aggregation.LookupOperation;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -55,10 +45,24 @@ public class BankService {
         return banksAndAtms;
     }
 
+    public List<BankDistanceUserDTO> getBankDistanceUserDTO(boolean includeBanks , boolean includeAtms , String name, LocationInfo UserLocation) {
+        if(UserLocation == null)
+            return getBanksAndAtmsWithoutUserDistance(includeBanks,includeAtms,name);
+        else
+            return getBanksAndAtmsSortedByUserDistance(includeBanks,includeAtms,name,UserLocation);
+    }
+
     public List<BankDistanceUserDTO> getBanksAndAtmsSortedByUserDistance(boolean includeBanks, boolean includeAtms, String name, LocationInfo UserLocation) {
         return getBanksAndAtms(includeBanks, includeAtms, name)
                 .stream().map(x -> new BankDistanceUserDTO(x, distance(UserLocation, x), bankImageRepository.findBankImagesByName(x.getName())))
                 .sorted(Comparator.comparing(BankDistanceUserDTO::getDistanceFromUser))
+                .collect(Collectors.toList());
+    }
+
+    public List<BankDistanceUserDTO> getBanksAndAtmsWithoutUserDistance(boolean includeBanks , boolean includeAtms , String name)
+    {
+        return getBanksAndAtms(includeBanks,includeAtms,name).stream()
+                .map(x->new BankDistanceUserDTO(x,null,bankImageRepository.findBankImagesByName(x.getName())))
                 .collect(Collectors.toList());
     }
 
