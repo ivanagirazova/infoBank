@@ -30,7 +30,7 @@ public class BankRestController {
                                             @RequestBody(required = false) LocationInfo userLocation) {
         if (userLocation == null) {
             return bankService.getBanksAndAtms(includeBanks,includeAtms,name).stream()
-                    .map(x->new BankDistanceUserDTO(x,null))
+                    .map(x->new BankDistanceUserDTO(x,null,bankImageRepository.findBankImagesByName(x.getName())))
                     .collect(Collectors.toList());
         }
         return bankService.getBanksAndAtmsSortedByUserDistance(includeBanks,includeAtms, name, userLocation);

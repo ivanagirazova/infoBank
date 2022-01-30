@@ -3,15 +3,22 @@ package mk.finki.ukim.infobank.DTO;
 import lombok.Getter;
 import lombok.Setter;
 import mk.finki.ukim.infobank.Model.BankEntity;
+import mk.finki.ukim.infobank.Model.BankImages;
+import mk.finki.ukim.infobank.Repository.BankImageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Getter
 @Setter
 public class BankDistanceUserDTO {
+
+
     private BankEntity bankInfo;
     private Double distanceFromUser;
+    private BankImages bankImage;
 
-    public BankDistanceUserDTO(BankEntity bankEntity, Double distanceFromUser) {
+    public BankDistanceUserDTO(BankEntity bankEntity, Double distanceFromUser, BankImages bankImage) {
         this.bankInfo = bankEntity;
         this.distanceFromUser = distanceFromUser;
+        this.bankImage = bankImage;
     }
 }

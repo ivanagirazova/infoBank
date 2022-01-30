@@ -5,6 +5,7 @@ import mk.finki.ukim.infobank.DTO.BankDistanceUserDTO;
 import mk.finki.ukim.infobank.Model.BankEntity;
 import mk.finki.ukim.infobank.Model.BankImgResult;
 import mk.finki.ukim.infobank.Model.LocationInfo;
+import mk.finki.ukim.infobank.Repository.BankImageRepository;
 import mk.finki.ukim.infobank.Repository.BankRepository;
 import mk.finki.ukim.infobank.Components.Filters.Filters;
 import mk.finki.ukim.infobank.Components.HTTP.OverpassHttpRequest;
@@ -25,23 +26,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
-public class BankService{
+public class BankService {
     private final BankRepository bankRepository;
+    private final BankImageRepository bankImageRepository;
 
-    public BankService(BankRepository bankRepository) {
+    public BankService(BankRepository bankRepository, BankImageRepository bankImageRepository) {
         this.bankRepository = bankRepository;
+        this.bankImageRepository = bankImageRepository;
     }
 
-    public void saveElement(Map<String,String> element)
-    {
+    public void saveElement(Map<String, String> element) {
         bankRepository.save(new BankEntity(element));
     }
 
-    public List<BankEntity> getBanksAndAtms(boolean includeBanks ,boolean includeAtms ,String name)
-    {
+    public List<BankEntity> getBanksAndAtms(boolean includeBanks, boolean includeAtms, String name) {
         List<BankEntity> banksAndAtms = new ArrayList<>();
         if (includeBanks) {
             banksAndAtms.addAll(bankRepository.findAllByType("bank"));
@@ -49,26 +49,24 @@ public class BankService{
         if (includeAtms) {
             banksAndAtms.addAll(bankRepository.findAllByType("atm"));
         }
-        if(name != null )banksAndAtms = banksAndAtms.stream().filter(x->x.getName().contains(name)).collect(Collectors.toList());
+        if (name != null)
+            banksAndAtms = banksAndAtms.stream().filter(x -> x.getName().contains(name)).collect(Collectors.toList());
 
         return banksAndAtms;
     }
 
-    public List<BankDistanceUserDTO> getBanksAndAtmsSortedByUserDistance(boolean includeBanks , boolean includeAtms , String name, LocationInfo UserLocation)
-    {
+    public List<BankDistanceUserDTO> getBanksAndAtmsSortedByUserDistance(boolean includeBanks, boolean includeAtms, String name, LocationInfo UserLocation) {
         return getBanksAndAtms(includeBanks, includeAtms, name)
-                .stream().map( x -> new BankDistanceUserDTO(x, distance(UserLocation, x)))
+                .stream().map(x -> new BankDistanceUserDTO(x, distance(UserLocation, x), bankImageRepository.findBankImagesByName(x.getName())))
                 .sorted(Comparator.comparing(BankDistanceUserDTO::getDistanceFromUser))
                 .collect(Collectors.toList());
     }
 
-    public List<BankEntity> getAll()
-    {
-       return bankRepository.findAll();
+    public List<BankEntity> getAll() {
+        return bankRepository.findAll();
     }
 
-    public void updateBankData()
-    {
+    public void updateBankData() {
         InputStream bankInputStream = null;
         InputStream atmInputStream = null;
         try {
@@ -88,8 +86,8 @@ public class BankService{
         getDataPipe.addFilter(Filters.removeNullAndDistinct);
         getDataPipe.addFilter(Filters.filterBanks);
 
-        List<Map<String,String>> bankData = (List<Map<String, String>>) getDataPipe.PerformOperations(bankInputStream);
-        List<Map<String,String>> atmData = (List<Map<String, String>>) getDataPipe.PerformOperations(atmInputStream);
+        List<Map<String, String>> bankData = (List<Map<String, String>>) getDataPipe.PerformOperations(bankInputStream);
+        List<Map<String, String>> atmData = (List<Map<String, String>>) getDataPipe.PerformOperations(atmInputStream);
 
         bankData.forEach(this::saveElement);
         atmData.forEach(this::saveElement);
@@ -99,9 +97,10 @@ public class BankService{
      * Calculate distance between two points in latitude and longitude taking
      * into account height difference. If you are not interested in height
      * difference pass 0.0. Uses Haversine method as its base.
-     *
+     * <p>
      * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
      * el2 End altitude in meters
+     *
      * @returns Distance in Meters
      */
     public static double distance(LocationInfo first, LocationInfo second) {
@@ -127,36 +126,5 @@ public class BankService{
         distance = Math.pow(distance, 2) + Math.pow(height, 2);
 
         return Math.round(Math.sqrt(distance));
-    }
-
-    //Moj code
-    //Kaj ke se povika funkcijava?
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
-    private Logger LOGGER = LoggerFactory.getLogger(BankService.class);
-
-    public void lookupOperation(){
-        LookupOperation lookupOperation = LookupOperation.newLookup()
-                .from("BankImages")
-                .localField("name")
-                .foreignField("name")
-                .as("BankImages");
-
-        Aggregation aggregation = Aggregation.newAggregation(lookupOperation);
-        List<BankImgResult> results = mongoTemplate.aggregate(aggregation, "BanksImages", BankImgResult.class).getMappedResults();
-        LOGGER.info("Obj Size " +results.size());
-    }
-
-    public void newLookupOperation(){
-        LookupOperation lookupOperation = LookupOperation.newLookup().
-                from("BankImages").
-                localField("name").
-                foreignField("name").
-                as("BankImages");
-
-        AggregationOperation match = Aggregation.match(Criteria.where("post").size(1));
-        Aggregation aggregation = Aggregation.newAggregation(lookupOperation, match);
-        List<BasicDBObject> results = mongoTemplate.aggregate(aggregation, "users", BasicDBObject.class).getMappedResults();
     }
 }
