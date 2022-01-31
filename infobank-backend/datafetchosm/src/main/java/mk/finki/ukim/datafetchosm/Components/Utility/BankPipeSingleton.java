@@ -1,7 +1,7 @@
-package mk.finki.ukim.infobank.Components.Utility;
+package mk.finki.ukim.datafetchosm.Components.Utility;
 
-import mk.finki.ukim.infobank.Components.Filters.Filters;
-import mk.finki.ukim.infobank.Components.Pipe.Pipe;
+import mk.finki.ukim.datafetchosm.Components.Filters.Filters;
+import mk.finki.ukim.datafetchosm.Components.Pipe.Pipe;
 
 /**
  * Singleton design pattern

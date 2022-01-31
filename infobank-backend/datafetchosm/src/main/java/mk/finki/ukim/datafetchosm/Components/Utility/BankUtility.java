@@ -1,7 +1,7 @@
-package mk.finki.ukim.infobank.Components.Utility;
+package mk.finki.ukim.datafetchosm.Components.Utility;
 
-import mk.finki.ukim.infobank.Components.HTTP.OverpassHttpRequest;
-import mk.finki.ukim.infobank.Model.enumerations.BankType;
+import mk.finki.ukim.datafetchosm.Components.HTTP.OverpassHttpRequest;
+import mk.finki.ukim.datafetchosm.Model.enumerations.BankType;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;

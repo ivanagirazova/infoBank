@@ -1,6 +1,9 @@
 package mk.finki.ukim.datafetchosm.Service;
 
+import mk.finki.ukim.datafetchosm.Components.Utility.BankPipeSingleton;
+import mk.finki.ukim.datafetchosm.Components.Utility.BankUtility;
 import mk.finki.ukim.datafetchosm.Model.BankEntity;
+import mk.finki.ukim.datafetchosm.Model.enumerations.BankType;
 import mk.finki.ukim.datafetchosm.Repository.BankRepository;
 import mk.finki.ukim.datafetchosm.Components.Filters.Filters;
 import mk.finki.ukim.datafetchosm.Components.HTTP.OverpassHttpRequest;
@@ -25,33 +28,12 @@ public class BankService {
         bankRepository.save(new BankEntity(element));
     }
 
-    public List<BankEntity> getAll() {
-        return bankRepository.findAll();
-    }
-
-    public void updateBankData() {
-        InputStream bankInputStream = null;
-        InputStream atmInputStream = null;
-        try {
-            bankInputStream = OverpassHttpRequest.httpRequest(OverpassHttpRequest.bankQuery);
-            atmInputStream = OverpassHttpRequest.httpRequest(OverpassHttpRequest.atmQuery);
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
-        }
-
-        Pipe getDataPipe = new Pipe();
-        getDataPipe.addFilter(Filters.CreateDocument);
-        getDataPipe.addFilter(Filters.CreateElement);
-        getDataPipe.addFilter(Filters.SkipFirstElement);
-        getDataPipe.addFilter(Filters.flatFilter);
-        getDataPipe.addFilter(Filters.ElementToMap);
-        getDataPipe.addFilter(Filters.changeFieldsToName);
-        getDataPipe.addFilter(Filters.removeNullAndDistinct);
-        getDataPipe.addFilter(Filters.filterBanks);
-
-        List<Map<String, String>> bankData = (List<Map<String, String>>) getDataPipe.PerformOperations(bankInputStream);
-        List<Map<String, String>> atmData = (List<Map<String, String>>) getDataPipe.PerformOperations(atmInputStream);
-
+    @SuppressWarnings("unchecked")
+    public void updateBankData() throws IOException, ParserConfigurationException, SAXException {
+        List<Map<String, String>> bankData = (List<Map<String, String>>) BankPipeSingleton.getInstance()
+                .PerformOperations(BankUtility.getHttpBankData(BankType.bank));
+        List<Map<String, String>> atmData = (List<Map<String, String>>) BankPipeSingleton.getInstance()
+                .PerformOperations(BankUtility.getHttpBankData(BankType.atm));
         bankData.forEach(this::saveElement);
         atmData.forEach(this::saveElement);
     }

@@ -2,7 +2,7 @@ package mk.finki.ukim.navigation.Model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mk.finki.ukim.infobank.Model.enumerations.BankType;
+import mk.finki.ukim.navigation.Model.enumerations.BankType;
 import org.springframework.data.annotation.Id;
 import javax.annotation.PostConstruct;
 import java.util.HashMap;

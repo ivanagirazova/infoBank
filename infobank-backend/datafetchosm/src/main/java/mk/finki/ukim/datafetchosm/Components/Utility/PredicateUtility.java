@@ -1,4 +1,4 @@
-package mk.finki.ukim.infobank.Components.Utility;
+package mk.finki.ukim.datafetchosm.Components.Utility;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;

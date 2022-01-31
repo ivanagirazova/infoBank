@@ -1,6 +1,6 @@
-package mk.finki.ukim.infobank.Components.Utility;
+package mk.finki.ukim.navigation.Components.Utility;
 
-import mk.finki.ukim.infobank.Model.LocationInfo;
+import mk.finki.ukim.navigation.Model.LocationInfo;
 
 public class LocationUtility {
 

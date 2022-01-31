@@ -1,6 +1,6 @@
-package mk.finki.ukim.infobank.Components.Utility;
+package mk.finki.ukim.datafetchosm.Components.Utility;
 
-import mk.finki.ukim.infobank.DTO.XmlDto;
+import mk.finki.ukim.datafetchosm.DTO.XmlDto;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;

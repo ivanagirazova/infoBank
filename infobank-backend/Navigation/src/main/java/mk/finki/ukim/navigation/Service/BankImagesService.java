@@ -1,7 +1,7 @@
-package mk.finki.ukim.infobank.Service;
+package mk.finki.ukim.navigation.Service;
 
-import mk.finki.ukim.infobank.Model.BankImages;
-import mk.finki.ukim.infobank.Repository.BankImageRepository;
+import mk.finki.ukim.navigation.Model.BankImages;
+import mk.finki.ukim.navigation.Repository.BankImageRepository;
 import org.springframework.stereotype.Service;
 
 @Service
