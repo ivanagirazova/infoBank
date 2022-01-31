@@ -2,8 +2,8 @@ package mk.finki.ukim.navigation.Model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mk.finki.ukim.infobank.Model.enumerations.BankType;
 import org.springframework.data.annotation.Id;
-
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +11,10 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 public class BankEntity extends LocationInfo {
+
     @Id
     private String id;
-    private String type;
+    private BankType type;
     private String name;
     private Map<String, String> details;
 
@@ -26,7 +27,7 @@ public class BankEntity extends LocationInfo {
         HashMap<String, String> detailsCopy = new HashMap<>(data);
         id = detailsCopy.remove("id");
         name = detailsCopy.remove("name");
-        type = detailsCopy.remove("amenity");
+        type = BankType.valueOf(detailsCopy.remove("amenity"));
         lon = Double.parseDouble(detailsCopy.get("lon"));
         lat = Double.parseDouble(detailsCopy.get("lat"));
         details = detailsCopy;
