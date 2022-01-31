@@ -8,7 +8,7 @@ public class GroupBankNames {
 
     public static HashMap<List<String>,String> queries;
     public static List<String> noBanks = Arrays.asList("Iute credit","Raiffeisen Bank","ijj","ATM");
-    static{
+    static {
         var halk = Arrays.asList("Halbank","Halkbank", "Халкбанк", "Hallbank","Halk","Халк");
         var tutunska = Arrays.asList("Тутунска","NLB","НЛБ");
         var sparkase = Arrays.asList("Sparkasse","Шпаркасе");

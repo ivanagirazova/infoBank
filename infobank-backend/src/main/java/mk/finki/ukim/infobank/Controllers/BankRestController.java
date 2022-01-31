@@ -1,14 +1,17 @@
 package mk.finki.ukim.infobank.Controllers;
 
+import mk.finki.ukim.infobank.Components.UpdateDatabase;
 import mk.finki.ukim.infobank.DTO.BankDistanceUserDTO;
 import mk.finki.ukim.infobank.Model.BankEntity;
 import mk.finki.ukim.infobank.Model.BankImages;
 import mk.finki.ukim.infobank.Model.LocationInfo;
+import mk.finki.ukim.infobank.Model.enumerations.BankType;
 import mk.finki.ukim.infobank.Repository.BankImageRepository;
 import mk.finki.ukim.infobank.Service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,11 +35,12 @@ public class BankRestController {
 
     @GetMapping("operators")
     public List<String> getAllBankOperators() {
-        return bankService.getAll().stream().map(BankEntity::getName).distinct().collect(Collectors.toList());
+        return bankService.getAllOperators();
     }
 
     @GetMapping("images")
     public List<BankImages> bankImages() {
         return bankImageRepository.findAll();
     }
+
 }
