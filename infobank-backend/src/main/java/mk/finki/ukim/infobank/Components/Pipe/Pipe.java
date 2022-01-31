@@ -11,15 +11,12 @@ public class Pipe
         operations = new ArrayList<>();
     }
 
-    public void addFilter(IFilter operation)
-    {
+    public void addFilter(IFilter operation) {
         operations.add(operation);
     }
 
-    public Object PerformOperations(Object input)
-    {
-        for (IFilter operation : operations)
-        {
+    public Object PerformOperations(Object input) {
+        for (IFilter operation : operations) {
             input = operation.Execute(input);
         }
         return input;

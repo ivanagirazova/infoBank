@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class XmlDto
-{
+
+/**
+ * Composite design pattern
+ */
+public class XmlDto {
     public Map<String,String> map;
     public List<XmlDto> subElements;
 
