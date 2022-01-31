@@ -14,12 +14,13 @@ export class DetailsComponent {
   @Input() banks: BankDistance[] = [];
   @Input() selectedBank: BankDistance | undefined;
 
-  constructor(public bankService:BankService, private mapService:MapService) { }
+  constructor(public bankService: BankService, private mapService: MapService) {
+  }
 
-  show: boolean = true;
+  showDetails: boolean = true;
 
-  changeShow() : void {
-    this.show = !this.show;
+  changeShow(): void {
+    this.showDetails = !this.showDetails;
   }
 
   onClick(selectedBank: BankDistance) {
@@ -31,19 +32,18 @@ export class DetailsComponent {
     this.selectedBank = undefined;
   }
 
-  objectKeys(obj:BankDistance) {
+  objectKeys(obj: BankDistance) {
     return Object.keys(obj);
   }
 
   getDistance(bank: BankDistance): string {
     if (bank.distanceFromUser != null) {
       return this.calculateDistance(bank.distanceFromUser);
-    }
-    else return "";
+    } else return "";
   }
 
   calculateDistance(distance: number): string {
-    if (distance > 1000) return (distance/1000) + " km";
+    if (distance > 1000) return (distance / 1000) + " km";
     return distance + " m";
   }
 }
