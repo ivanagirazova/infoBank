@@ -1,23 +1,23 @@
 version: '3'
 services:
   discovery:
-    image: mk.finki.ukim/demo:0.0.1-SNAPSHOT
+    image: mk.finki.ukim/discovery
     ports:
       - 8761:8761
   datafetchosm-service:
-    image: mk.finki.ukim/datafetchosm:0.0.1-SNAPSHOT
+    image: mk.finki.ukim/datafetchosm
     depends_on:
       - discovery
     ports:
       - 8087:8087
   navigation-service:
-    image: mk.finki.ukim/navigation:0.0.1-SNAPSHOT
+    image: mk.finki.ukim/navigator
     depends_on:
       - discovery
     ports:
       - 8086:8086
   api-gateway-service:
-    image: mk.finki.ukim/api-gateway:0.0.1-SNAPSHOT
+    image: mk.finki.ukim/api-gateway
     depends_on:
       - discovery
     ports:
