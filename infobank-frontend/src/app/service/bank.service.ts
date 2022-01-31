@@ -28,12 +28,6 @@ export class BankService {
     ).pipe(catchError(this.handleError));
   }
 
-  getImages() {
-    this.http.get<BankImage[]>(this.usersUrl + '/images', {
-      headers: new HttpHeaders({'Content-Type': 'application/json'}),
-    }).subscribe(x => this.pictures = x);
-  }
-
   getOperators(): Observable<string[]> {
     return this.http.get<string []>(this.usersUrl + "/operators");
   }
