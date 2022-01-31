@@ -1,14 +1,14 @@
 import * as L from "leaflet";
 
-const iconRetinaUrl = 'assets/pngfind.com-location-symbol-png-2821102.png';
-const iconUrl = 'assets/pngfind.com-location-symbol-png-2821102.png';
+const iconRetinaUrl = 'assets/location-icon.png';
+const iconUrl = 'assets/location-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
 
 export const MapIconSettings = L.icon({
   iconRetinaUrl,
   iconUrl,
   shadowUrl,
-  iconSize: [32, 51],
+  iconSize: [40, 60],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28]

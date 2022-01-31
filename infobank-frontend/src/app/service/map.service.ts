@@ -6,15 +6,17 @@ import {MapIconSettings, tiles} from "../models/map.settings";
 @Injectable({
   providedIn: 'root'
 })
-export class MapService{
+export class MapService {
 
   public map: any;
   cityCenter: LocationInfo = new LocationInfo(41.9936657, 21.4428736);
-  constructor() { }
+
+  constructor() {
+  }
 
   public initMap(): L.Map {
     this.map = L.map('map', {
-      center: [ this.cityCenter.lat, this.cityCenter.lon],
+      center: [this.cityCenter.lat, this.cityCenter.lon],
       zoom: 14
     });
     tiles.addTo(this.map);
@@ -23,6 +25,6 @@ export class MapService{
   }
 
   centerView(location: LocationInfo) {
-   this.map.setView([location.lat,location.lon], this.map.getZoom(), {animate: true})
+    this.map.setView([location.lat, location.lon], this.map.getZoom(), {animate: true})
   }
 }
