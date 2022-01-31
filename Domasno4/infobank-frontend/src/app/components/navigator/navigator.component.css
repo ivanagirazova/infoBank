@@ -4,12 +4,14 @@
   border-radius: 15px;
   width: 200px;
   text-align: left;
-  padding: 5px 10px ;
+  padding: 5px 10px;
 }
+
 .navbar {
   background-color: #2D2D2D;
   height: 10%;
 }
+
 .search {
   background-color: #90DFAA;
   border-radius: 15px;
@@ -18,66 +20,136 @@
   margin-bottom: 5px;
   margin-left: 10px;
 }
+
 .search:hover {
   background-color: #90DFAA;
   border-color: white;
 }
+
 .search:focus {
   background-color: #90DFAA;
   border-color: #90DFAA;
   box-shadow: 0 0 0 0 !important;
 }
+
 .checkbox {
   display: inline-flex;
 }
+
 .form-check {
   margin: 10px;
 }
+
 .form-check-label {
   color: white;
   font-weight: bold;
   font-size: 18px;
 }
-.form-check-input {
 
-}
 .form-check-input:checked {
   background-color: #90DFAA;
   border-color: #90DFAA;
 }
+
 .form-check-input:focus {
   box-shadow: 0 0 0 0rem #90DFAA !important;
 }
+
 .form-check-input:not(:checked) {
   background-color: gray;
   border-color: gray;
 }
-.form-switch .form-check-input:not(:checked){
+
+.form-switch .form-check-input:not(:checked) {
   background-image: url("https://i.imgur.com/3t1OSCl.png");
 }
-.form-switch .form-check-input:checked {
-  /*background-image: url("https://i.imgur.com/nXxoEoa.png");*/
-}
+
 .logo-name {
   display: inline-flex;
   color: white;
 }
+
 .height {
   height: 35px;
 }
+
 .logo {
   margin-right: 10px;
 }
+
 .container-fluid {
   padding-top: 8px;
 }
+
 #logo {
   height: 40px;
   width: 40px;
   margin-right: 10px;
 }
 
+.col {
+  flex: 0 0 0%;
+  display: inline-flex !important;
+  color: white;
+}
 
+.col-md-auto {
+  margin: 0% 1.5%;
+}
 
+#checkbox {
+  margin: 0% 0%;
+}
 
+.row {
+  width: 100%;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  justify-content: space-between;
+}
 
+.navbar {
+  height: auto !important;
+  background-color: #2D2D2D !important;
+}
+
+nav {
+  z-index: 999;
+}
+
+@media screen and (max-width: 920px) {
+  .navbar {
+    justify-content: center !important;
+    text-align: center;
+  }
+
+  .row {
+    width: -webkit-fill-available;
+    flex-direction: column !important;
+  }
+
+  .col-6 {
+    width: auto;
+  }
+
+  .col {
+    justify-content: center;
+  }
+
+  .col-md-auto {
+    margin: 0%;
+  }
+
+  .col {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .row {
+    width: auto;
+  }
+
+  .col {
+  }
+}

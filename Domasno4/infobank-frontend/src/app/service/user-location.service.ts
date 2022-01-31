@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import * as L from "leaflet";
+import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 
 
@@ -8,8 +7,8 @@ import {Observable} from "rxjs";
 })
 export class UserLocationService {
 
-  public getUserLocation():Observable<any> {
-    return new Observable((observer:any) => {
+  public getUserLocation(): Observable<any> {
+    return new Observable((observer: any) => {
       window.navigator.geolocation.getCurrentPosition(position => {
           observer.next(position);
           observer.complete();

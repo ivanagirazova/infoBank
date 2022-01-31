@@ -10,37 +10,37 @@ import {BankType} from "../models/bank-type";
 })
 export class BankService {
 
-  usersUrl = "http://localhost:8080/banks";//"https://infobank-spring.herokuapp.com/banks";
+  usersUrl = "http://localhost:8080/banks" // "https://infobank-spring.herokuapp.com/banks";
   public banks: BankDistance[] = []
-  pictures:BankImage[] = []
+  pictures: BankImage[] = []
 
-  constructor(private http:HttpClient) {
+  constructor(private http: HttpClient) {
     this.getImages();
   }
 
-  getBanks(showBank:boolean, showAtm: boolean, name: string, userLocation:any): Observable<any> {
+  getBanks(showBank: boolean, showAtm: boolean, name: string, userLocation: any): Observable<any> {
     return this.http.post(
       this.usersUrl,
       JSON.stringify(userLocation),
       {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+        headers: new HttpHeaders({'Content-Type': 'application/json'}),
         params: new HttpParams().set('includeBanks', showBank).set('includeAtms', showAtm).set('name', name)
       }
     ).pipe(catchError(this.handleError));
   }
 
   getImages() {
-    this.http.get<BankImage[]>(this.usersUrl + '/images',{
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    this.http.get<BankImage[]>(this.usersUrl + '/images', {
+      headers: new HttpHeaders({'Content-Type': 'application/json'}),
     }).subscribe(x => this.pictures = x);
   }
 
   getOperators(): Observable<string[]> {
-    return this.http.get<string []>(this.usersUrl+"/operators");
+    return this.http.get<string []>(this.usersUrl + "/operators");
   }
 
-  getPicture(name:string,type: string) {
-    let bankImage = this.pictures.find(x=>x.name===name);
+  getPicture(name: string, type: string) {
+    let bankImage = this.pictures.find(x => x.name === name);
     if (bankImage == undefined) return null;
 
     if (type == BankType.Atm) return bankImage.atm;
@@ -49,16 +49,12 @@ export class BankService {
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);
     } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
       console.error(
         `Backend returned code ${error.status}, body was: `, error.error);
     }
-    // Return an observable with a user-facing error message.
-    return throwError(()=>
+    return throwError(() =>
       'Something bad happened; please try again later.');
   }
 }

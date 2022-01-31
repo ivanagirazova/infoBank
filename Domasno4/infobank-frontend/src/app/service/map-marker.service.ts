@@ -14,7 +14,9 @@ export class MapMarkerService {
   private markers: Array<L.Marker> = [];
   private userLocationMarker: any;
 
-  constructor(private bankService: BankService,private mapService: MapService) {}
+  constructor(private bankService: BankService, private mapService: MapService) {
+    
+  }
 
   setBanksOnMap(banks: BankDistance[], component: MapComponent): void {
     let map = this.mapService.map;
@@ -33,12 +35,12 @@ export class MapMarkerService {
     }
   }
 
-  public setUserLocationOnMap(location:LocationInfo) {
+  public setUserLocationOnMap(location: LocationInfo) {
     let map = this.mapService.map;
-    if (this.userLocationMarker != undefined){
+    if (this.userLocationMarker != undefined) {
       this.userLocationMarker.remove();
     }
-    this.userLocationMarker =  L.marker([location.lat, location.lon]).addTo(map);
+    this.userLocationMarker = L.marker([location.lat, location.lon]).addTo(map);
     this.userLocationMarker.addTo(map);
     this.mapService.centerView(location);
   }

@@ -1,6 +1,6 @@
 .map-container {
   position: absolute;
-  top: 10%;
+  top: 5.5%;
   left: 0;
   right: 0;
   bottom: 0;
@@ -12,4 +12,10 @@
 
 #map {
   height: 100%;
+}
+
+@media screen and (max-width: 920px) {
+  .map-container {
+    top: 50px;
+  }
 }
