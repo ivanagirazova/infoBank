@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("banks")
+@CrossOrigin
 public class ApiGatewayController {
 
     @Autowired

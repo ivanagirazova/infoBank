@@ -1,24 +1,31 @@
 version: '3'
 services:
   discovery:
+    hostname : registration
     image: mk.finki.ukim/discovery
     ports:
-      - 8761:8761
+      - "8761:8761"
   datafetchosm-service:
     image: mk.finki.ukim/datafetchosm
+    environment:
+      - "eureka.client.serviceUrl.defaultZone=http://registration:8761/eureka/"
     depends_on:
-      - discovery
+      - "discovery"
     ports:
-      - 8087:8087
+      - "8087:8087"
   navigation-service:
     image: mk.finki.ukim/navigator
+    environment:
+      - "eureka.client.serviceUrl.defaultZone=http://registration:8761/eureka/"
     depends_on:
-      - discovery
+      - "discovery"
     ports:
-      - 8086:8086
+      - "8086:8086"
   api-gateway-service:
     image: mk.finki.ukim/api-gateway
+    environment:
+      - "eureka.client.serviceUrl.defaultZone=http://registration:8761/eureka/"
     depends_on:
-      - discovery
+      - "discovery"
     ports:
-      - 8080:8080
+      - "8080:8080"

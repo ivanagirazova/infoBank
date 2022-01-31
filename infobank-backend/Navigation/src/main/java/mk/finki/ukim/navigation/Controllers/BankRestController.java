@@ -29,7 +29,7 @@ public class BankRestController {
         return bankService.getBankDistanceUserDTO(includeBanks, includeAtms, name, userLocation);
     }
 
-    @GetMapping("operators1")
+    @GetMapping("operators")
     public List<String> getAllBankOperators() {
         return bankService.getAllOperators();
     }
