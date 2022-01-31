@@ -15,14 +15,15 @@ export class NavigatorComponent implements OnInit {
 
   @Output() searchChangedEvent = new EventEmitter<any>();
 
-  operators:Array<string> = [''];
-  userLocation:any;
+  operators: Array<string> = [''];
+  userLocation: any;
 
-  constructor(private bankService:BankService) { }
+  constructor(private bankService: BankService) {
+  }
 
   ngOnInit(): void {
     this.bankService.getOperators().subscribe(operators =>
-      this.operators = ['',...operators]
+      this.operators = ['', ...operators]
     );
   }
 

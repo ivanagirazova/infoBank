@@ -13,16 +13,17 @@ import {UserLocationService} from "../../service/user-location.service";
   styleUrls: ['./map.component.css']
 })
 
-export class MapComponent implements AfterViewInit, OnInit, OnChanges  {
+export class MapComponent implements AfterViewInit, OnInit, OnChanges {
 
-  @Input() searchBank:boolean = true;
-  @Input() searchAtm:boolean = true;
-  @Input() nameBank:string = '';
+  @Input() searchBank: boolean = true;
+  @Input() searchAtm: boolean = true;
+  @Input() nameBank: string = '';
   userLocation: LocationInfo | undefined;
   selectedBank: BankDistance | undefined;
   map: any;
 
-  constructor(private mapService: MapService, private bankMarkerService: MapMarkerService, private bankService: BankService, private userLocationService: UserLocationService) {}
+  constructor(private mapService: MapService, private bankMarkerService: MapMarkerService, private bankService: BankService, private userLocationService: UserLocationService) {
+  }
 
   ngOnInit(): void {
   }
@@ -51,9 +52,9 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges  {
     return this.bankService.banks;
   }
 
-  onClickBank(e:LeafletEvent) {
+  onClickBank(e: LeafletEvent) {
     let bankId = e.sourceTarget.options.icon.options.bankId;
-    this.selectedBank = this.bankService.banks.find(x=>x.bankInfo.id == bankId);
+    this.selectedBank = this.bankService.banks.find(x => x.bankInfo.id == bankId);
 
     if (this.selectedBank != undefined) {
       this.mapService.centerView(new LocationInfo(this.selectedBank.bankInfo.lat, this.selectedBank.bankInfo.lon));
@@ -62,14 +63,13 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges  {
 
   getUserLocationOnMap() {
     this.userLocationService.getUserLocation().subscribe({
-      next:(pos)=> {
+      next: (pos) => {
         this.userLocation = new LocationInfo(pos.coords.latitude, pos.coords.longitude);
         this.bankMarkerService.setUserLocationOnMap(this.userLocation);
 
         this.searchBanks();
       },
-      error: ()=> {
-        // permission denied
+      error: () => {
       }
     });
   }

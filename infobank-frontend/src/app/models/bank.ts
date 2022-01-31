@@ -4,7 +4,7 @@ export class Bank {
   public lon: number;
   public name: string;
   public type: string;
-  public details:  { [key: string]: string } = {};
+  public details: { [key: string]: string } = {};
 
   constructor(id: string, lat: number, lon: number, name: string, type: string, details: {}) {
     this.id = id;

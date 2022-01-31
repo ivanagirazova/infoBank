@@ -6,3 +6,9 @@
   margin: -10px;
   border: solid #fff;
 }
+@media screen and (max-width: 920px) {
+  .leaflet-top{
+    top: 10% !important;
+  }
+}
+
