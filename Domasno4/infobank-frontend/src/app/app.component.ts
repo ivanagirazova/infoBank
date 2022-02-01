@@ -10,15 +10,15 @@ import {SearchBanksQuery} from "./models/search.banks.query";
 export class AppComponent {
   title = 'InfoBank-frontend';
 
-  searchBank:boolean = true;
-  searchAtm:boolean = true;
-  nameBank:string = '';
+  searchBank: boolean = true;
+  searchAtm: boolean = true;
+  nameBank: string = '';
   location: LocationInfo | undefined;
 
   constructor() {
   }
 
-  getSearch(search: SearchBanksQuery) {
+  getSearchQuery(search: SearchBanksQuery) {
     this.searchBank = search.banks
     this.searchAtm = search.atms
     this.nameBank = search.name

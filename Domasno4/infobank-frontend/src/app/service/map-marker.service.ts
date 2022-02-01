@@ -15,16 +15,17 @@ export class MapMarkerService {
   private userLocationMarker: any;
 
   constructor(private bankService: BankService, private mapService: MapService) {
-    
   }
 
   setBanksOnMap(banks: BankDistance[], component: MapComponent): void {
     let map = this.mapService.map;
     this.markers.forEach(x => x.remove());
 
-    for (const bank of banks.map(x => x.bankInfo)) {
+    for (const bankDistance of banks) {
+      let bank = bankDistance.bankInfo;
+
       let bankMarkerDiv: BankMarkerDiv = {
-        html: `<img src="${this.bankService.getPicture(bank.name, bank.type)}" class="bank-icons">`,
+        html: `<img src="${this.bankService.getPicture(bankDistance.bankImage, bank.type)}" class="bank-icons">`,
         bankId: bank.id
       };
 

@@ -10,12 +10,11 @@ import {BankType} from "../models/bank-type";
 })
 export class BankService {
 
-  usersUrl = "http://localhost:8080/banks" // "https://infobank-spring.herokuapp.com/banks";
+  usersUrl = "https://infobank-mk-backend.herokuapp.com/banks";
   public banks: BankDistance[] = []
   pictures: BankImage[] = []
 
   constructor(private http: HttpClient) {
-    this.getImages();
   }
 
   getBanks(showBank: boolean, showAtm: boolean, name: string, userLocation: any): Observable<any> {
@@ -29,22 +28,13 @@ export class BankService {
     ).pipe(catchError(this.handleError));
   }
 
-  getImages() {
-    this.http.get<BankImage[]>(this.usersUrl + '/images', {
-      headers: new HttpHeaders({'Content-Type': 'application/json'}),
-    }).subscribe(x => this.pictures = x);
-  }
-
   getOperators(): Observable<string[]> {
     return this.http.get<string []>(this.usersUrl + "/operators");
   }
 
-  getPicture(name: string, type: string) {
-    let bankImage = this.pictures.find(x => x.name === name);
-    if (bankImage == undefined) return null;
-
-    if (type == BankType.Atm) return bankImage.atm;
-    return bankImage.bank;
+  getPicture(bank: BankImage, type: string) {
+    if (type == BankType.Atm) return bank.atm;
+    return bank.bank;
   }
 
   private handleError(error: HttpErrorResponse) {

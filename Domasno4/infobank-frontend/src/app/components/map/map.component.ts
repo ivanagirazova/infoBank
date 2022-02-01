@@ -20,7 +20,6 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
   @Input() nameBank: string = '';
   userLocation: LocationInfo | undefined;
   selectedBank: BankDistance | undefined;
-  map: any;
 
   constructor(private mapService: MapService, private bankMarkerService: MapMarkerService, private bankService: BankService, private userLocationService: UserLocationService) {
   }
@@ -33,7 +32,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    this.map = this.mapService.initMap();
+    this.mapService.initMap();
     this.getUserLocationOnMap();
     this.searchBanks()
   }
@@ -42,7 +41,6 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
     this.bankService.getBanks(this.searchBank, this.searchAtm, this.nameBank, this.userLocation).subscribe(
       banks => {
         this.bankService.banks = banks;
-        console.log(this.bankService.banks);
         this.bankMarkerService.setBanksOnMap(banks, this);
       }
     );
@@ -70,6 +68,7 @@ export class MapComponent implements AfterViewInit, OnInit, OnChanges {
         this.searchBanks();
       },
       error: () => {
+        console.log("access denied")
       }
     });
   }
