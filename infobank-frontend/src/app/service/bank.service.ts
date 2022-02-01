@@ -10,7 +10,7 @@ import {BankType} from "../models/bank-type";
 })
 export class BankService {
 
-  usersUrl = "http://localhost:8080/banks";
+  usersUrl = "https://infobank-mk-backend.herokuapp.com/banks";
   public banks: BankDistance[] = []
   pictures: BankImage[] = []
 
